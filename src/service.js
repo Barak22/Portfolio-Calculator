@@ -1,4 +1,5 @@
 const DataReader = require('./data-reader');
+const ReturnsCalculator = require('./returns-calculator');
 
 class Service {
 
@@ -7,6 +8,7 @@ class Service {
     this._dirPathToStocks = dirPathToStocks;
     this._dirPathToSingleIndex = dirPathToSingleIndex;
     this._dataReader = new DataReader();
+    this._returnsCalculator = new ReturnsCalculator();
   }
 
   calculate() {
@@ -16,8 +18,8 @@ class Service {
   }
 
   calculateSingleIndexStat() {
-    const index = this._dataReader.readFile(this._dirPathToSingleIndex);
-    // const returns = calculateReturns(index);
+    const indexRawData = this._dataReader.readFile(this._dirPathToSingleIndex);
+    const returns = this._returnsCalculator.calculateReturns(indexRawData);
     // const stats = calculateStat(index, returns);
     // return stats;
   }
