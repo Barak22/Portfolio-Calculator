@@ -17,9 +17,10 @@ class Service {
     const stats = calculateStats(stocks, returns);
   }
 
-  calculateSingleIndexStat() {
-    const indexRawData = this._dataReader.readFile(this._dirPathToSingleIndex);
+  async calculateSingleIndexStat() {
+    const indexRawData = await this._dataReader.readFile(this._dirPathToSingleIndex);
     const returns = this._returnsCalculator.calculateReturns(indexRawData);
+    console.log(returns)
     // const stats = calculateStat(index, returns);
     // return stats;
   }
