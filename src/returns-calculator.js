@@ -4,9 +4,7 @@ module.exports = class ReturnsCalculator {
   calc(indexRawData) {
     const acc = [];
 
-    const s = this._calcRec(indexRawData, acc);
-    console.log(s);
-    return s
+    return this._calcRec(indexRawData, acc)
   }
 
   _calcRec(indexRawData, acc) {
