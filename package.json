@@ -13,7 +13,9 @@
   "author": "Barak Marziano",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.17.1"
+    "csv-parser": "^2.3.2",
+    "express": "^4.17.1",
+    "read-directory": "^3.0.2"
   },
   "devDependencies": {
     "mocha": "^7.2.0"
