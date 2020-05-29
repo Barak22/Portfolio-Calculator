@@ -7,10 +7,7 @@ module.exports = class DataReader {
       const results = [];
       const singleIndexFileName = fs.readdirSync(path)[0];
       fs.createReadStream(path + '/' + singleIndexFileName)
-        .pipe(csv({
-          'skipLines': 1,
-          'headers': ['Date', 'Open', 'High', 'Low', 'Close', 'Adj Close', 'Volume']
-        }))
+        .pipe(csv(this._initCSVOptions()))
         .on('data', data => results.push(data))
         .on('end', () => resolve(results))
     });
@@ -18,6 +15,13 @@ module.exports = class DataReader {
     return results
       .map(this._toDateAndAdjOnly())
       .sort(this._byDate());
+  }
+
+  _initCSVOptions() {
+    return {
+      'skipLines': 1,
+      'headers': ['Date', 'Open', 'High', 'Low', 'Close', 'Adj Close', 'Volume']
+    };
   }
 
   _toDateAndAdjOnly() {
