@@ -2,19 +2,28 @@ const csv = require('csv-parser');
 const fs = require('fs');
 
 module.exports = class DataReader {
-  async readFile(path) {
-    const results = await new Promise(resolve => {
-      const results = [];
-      const singleIndexFileName = fs.readdirSync(path)[0];
-      fs.createReadStream(path + '/' + singleIndexFileName)
-        .pipe(csv(this._initCSVOptions()))
-        .on('data', data => results.push(data))
-        .on('end', () => resolve(results))
-    });
+  async readFiles(path) {
+    const results = [];
+
+    const singleIndexFilesNames = fs.readdirSync(path);
+
+    await Promise.all(singleIndexFilesNames.map(singleIndexFileName => {
+      return new Promise(resolve => {
+        const stockData = [];
+        fs.createReadStream(path + '/' + singleIndexFileName)
+          .pipe(csv(this._initCSVOptions()))
+          .on('data', data => stockData.push(data))
+          .on('end', () => {
+            const sortedStockData = stockData.map(this._toDateAndAdjOnly()).sort(this._byDate());
+            results.push({ stockName: singleIndexFileName, stockData: sortedStockData });
+            resolve();
+          })
+      })
+    }));
+
+    console.log('**** ' + JSON.stringify(results, undefined, 2));
 
     return results
-      .map(this._toDateAndAdjOnly())
-      .sort(this._byDate());
   }
 
   _initCSVOptions() {
@@ -28,7 +37,6 @@ module.exports = class DataReader {
     return data => ({
       'date': data.Date,
       'adj': data['Adj Close']
-
     });
   }
 
