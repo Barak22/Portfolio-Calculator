@@ -17,7 +17,7 @@ class Service {
     const stats = calculateStats(stocks, returns);
   }
 
-  async calculateSingleIndexStat() {
+  async calculateMarketPortfolio() {
     const indexRawData = await this._dataReader.readFile(this._dirPathToSingleIndex);
     const returns = this._returnsCalculator.calculateReturns(indexRawData);
     console.log(returns)
@@ -29,5 +29,4 @@ class Service {
 new Service(
   '',
   '/Users/barakm/Projects/Portfolio-Calculator/resources/single-index',
-)
-  .calculateSingleIndexStat();
+).calculateMarketPortfolio();
