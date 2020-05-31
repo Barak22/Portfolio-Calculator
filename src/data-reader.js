@@ -21,7 +21,7 @@ module.exports = class DataReader {
       })
     }));
 
-    console.log('**** ' + JSON.stringify(results, undefined, 2));
+    // console.log('**** ' + JSON.stringify(results, undefined, 2));
 
     return results
   }

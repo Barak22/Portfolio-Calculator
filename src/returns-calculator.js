@@ -1,10 +1,16 @@
 const { e, log, round } = require('mathjs');
 
 module.exports = class ReturnsCalculator {
-  calculateReturns(indexRawData) {
+  calculateReturns(indexesRawData) {
     const acc = [];
 
-    return this._calcRec(indexRawData, acc)
+    return indexesRawData.map(indexRawData => {
+      const stockReturns = this._calcRec(indexRawData.stockData, acc);
+      return {
+        stockName: indexRawData.stockName,
+        stockReturns
+      }
+    })
   }
 
   _calcRec(indexRawData, acc) {

@@ -18,9 +18,9 @@ class Service {
   }
 
   async calculateMarketPortfolio() {
-    const indexRawData = await this._dataReader.readFile(this._dirPathToSingleIndex);
-    const returns = this._returnsCalculator.calculateReturns(indexRawData);
-    console.log(returns)
+    const indexesRawData = await this._dataReader.readFiles(this._dirPathToSingleIndex);
+    const returns = this._returnsCalculator.calculateReturns(indexesRawData);
+    console.log(JSON.stringify(returns, undefined, 2));
     // const stats = calculateStat(index, returns);
     // return stats;
   }
@@ -28,5 +28,5 @@ class Service {
 
 new Service(
   '',
-  '/Users/barakm/Projects/Portfolio-Calculator/resources/single-index',
+  '/Users/barakm/Projects/Portfolio-Calculator/resources/market-portfolio',
 ).calculateMarketPortfolio();
