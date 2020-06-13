@@ -108,3 +108,5 @@ package-lock.json
 ./.idea/jsLibraryMappings.xml
 
 ./.idea/uiDesigner.xml
+
+./.idea/libraries
