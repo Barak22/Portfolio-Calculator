@@ -3,6 +3,7 @@ package com.portfolio.data_reader
 import java.io.File
 
 import com.github.tototoshi.csv._
+import com.portfolio.domain.{ IndexRawData, RawLine }
 import org.joda.time.DateTime
 
 class CsvDataReader(path: String) extends DataReader {
@@ -26,10 +27,3 @@ class CsvDataReader(path: String) extends DataReader {
     }
   }
 }
-
-case class IndexRawData(stockFileName: String, stockData: Seq[RawLine])
-
-case class RawLine(
-                    date: DateTime,
-                    adjClose: Double
-                  )

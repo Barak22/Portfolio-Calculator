@@ -1,5 +1,6 @@
 package com.portfolio.data_reader
 
+import com.portfolio.domain.{ IndexRawData, RawLine }
 import org.joda.time.DateTime
 import org.specs2.mutable.Specification
 
