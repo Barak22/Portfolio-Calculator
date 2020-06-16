@@ -13,3 +13,5 @@ case class ReturnData(
                        date: DateTime,
                        r: Double
                      )
+
+case class IndexReturnData(stockFileName: String, stockData: Seq[ReturnData])
