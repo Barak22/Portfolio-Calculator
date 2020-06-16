@@ -12,6 +12,9 @@ class PortfolioCalculatorService(dataReader: DataReader,
       indexRawData =>
         val indexReturns: Seq[ReturnData] = returnsCalculator.calculateReturns(indexRawData.stockData)
         IndexReturnData(indexRawData.stockFileName, indexReturns)
+
+      // Calculate Cov matrix.
+      // find the min variance vector for a desired E(r).
     }
   }
 }
