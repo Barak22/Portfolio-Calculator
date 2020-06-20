@@ -15,3 +15,9 @@ case class ReturnData(
                      )
 
 case class IndexReturnData(stockFileName: String, stockData: Seq[ReturnData])
+
+case class CovData(
+                    s1: String,
+                    s2: String,
+                    cov: Double
+                  )
