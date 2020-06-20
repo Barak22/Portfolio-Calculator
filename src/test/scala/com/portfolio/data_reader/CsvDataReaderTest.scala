@@ -6,6 +6,7 @@ import org.specs2.mutable.Specification
 
 class CsvDataReaderTest extends Specification {
   private val reader = new CsvDataReader("src/test/resources/market-portfolio")
+
   "CsvDataReader" should {
     "read file with one line" in {
       reader.readFiles() must containTheSameElementsAs(
