@@ -18,7 +18,7 @@ class PortfolioCalculatorService(dataReader: DataReader,
 
     val indexesEr: Map[String, Double] = indexesReturns
       .map(i =>
-        i.stockFileName -> PortfolioCalculatorService.calAverageReturn(i.stockData.map(_.r))).toMap
+        i.stockFileName -> PortfolioCalculatorService.calcAverageReturn(i.stockData.map(_.r))).toMap
 
     val covData: Seq[CovData] =
       for {
@@ -41,7 +41,7 @@ class PortfolioCalculatorService(dataReader: DataReader,
 }
 
 object PortfolioCalculatorService {
-  def calAverageReturn(returns: Seq[Double]) = {
+  def calcAverageReturn(returns: Seq[Double]) = {
     returns.foldLeft(0d)((acc, r) => acc + r) / returns.size
   }
 }
