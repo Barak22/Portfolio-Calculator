@@ -21,3 +21,5 @@ case class CovData(
                     s2: String,
                     cov: Double
                   )
+
+case class VectorData(stockName: String, weight: Int)

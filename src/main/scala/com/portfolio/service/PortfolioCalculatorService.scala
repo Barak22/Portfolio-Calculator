@@ -4,10 +4,13 @@ import com.portfolio.cov.CovCalculator
 import com.portfolio.data_reader.DataReader
 import com.portfolio.domain.{ CovData, IndexRawData, IndexReturnData, ReturnData }
 import com.portfolio.returns.ReturnsCalculator
+import com.portfolio.variance.VarianceCalculator
 
 class PortfolioCalculatorService(dataReader: DataReader,
                                  returnsCalculator: ReturnsCalculator,
-                                 covCalculator: CovCalculator) {
+                                 covCalculator: CovCalculator,
+                                 varianceCalculator: VarianceCalculator,
+                                 desiredReturn: 10) {
   def calculateMarketPortfolio() = {
     val indexesRawData: Seq[IndexRawData] = dataReader.readFiles()
     val indexesReturns: Seq[IndexReturnData] = indexesRawData.map {
@@ -33,6 +36,8 @@ class PortfolioCalculatorService(dataReader: DataReader,
         val cov = covCalculator.clacCov(r1, r2, s1Er, s2Er)
         CovData(s1.stockFileName, s2.stockFileName, cov)
       }
+
+    varianceCalculator.calcMinimalVarianceForReturn(covData, indexesEr, desiredReturn)
 
     // find the min variance vector for a desired E(r).
   }
