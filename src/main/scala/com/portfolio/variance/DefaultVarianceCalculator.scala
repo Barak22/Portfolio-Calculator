@@ -11,9 +11,9 @@ class DefaultVarianceCalculator extends VarianceCalculator {
 
   s1  s2  s3    s1  s2        s1
   3   0   0     3   0         3
-  2   1   0     2   1         2
-  2   0   1     1   2         1
-  1   2   0     0   3         0
+  2   1   0     2   1         
+  2   0   1     1   2
+  1   2   0     0   3
   1   1   1
   1   0   2
   0   3   0
@@ -37,12 +37,6 @@ class DefaultVarianceCalculator extends VarianceCalculator {
         percentageToDistribute,
         Range.inclusive(0, percentageToDistribute).reverse.flatMap(k => acc.map(v => VectorData(stocksNames.head, k) +: v)))
     }
-
-
-  // will generate the rows of the matrix
-  def generateVectors() = {
-    ???
-  }
 
   override def calcMinimalVarianceForReturn(stocksNames: Seq[String],
                                             covData: Seq[CovData],
