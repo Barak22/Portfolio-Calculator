@@ -20,7 +20,7 @@ class DefaultVarianceCalculator extends VarianceCalculator {
                   (c.s2.equals(s1.stockName) && c.s1.equals(s2.stockName))
               ).get.cov
 
-              s1.weight * s2.weight * cov
+              roundNumber(s1.weight * s2.weight * cov)
           }.sum
       }.sum
 
@@ -28,4 +28,6 @@ class DefaultVarianceCalculator extends VarianceCalculator {
     }
   }
 
+  private def roundNumber(num: Double) =
+    Math.round(num * 1000000000).toDouble / 1000000000
 }
