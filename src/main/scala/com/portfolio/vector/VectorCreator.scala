@@ -24,7 +24,7 @@ object VectorCreator {
   // will generate the columns of the matrix
   def createVectors(stocksNames: Seq[String], percentageToDistribute: Int = 100): Seq[VectorWeights] =
     createAllPermutations(stocksNames, percentageToDistribute, Seq(Nil))
-      .filter(_.map(_.weight).sum == percentageToDistribute)
+      .filter(_.map(_.weight).sum == (percentageToDistribute.toDouble / 100))
       .map(_.sortBy(s => s.stockName))
       .map(VectorWeights)
 
@@ -35,7 +35,9 @@ object VectorCreator {
       createAllPermutations(
         stocksNames.tail,
         percentageToDistribute,
-        Range.inclusive(0, percentageToDistribute).reverse.flatMap(k => acc.map(v => StockWeight(stocksNames.head, k) +: v)))
+        Range.inclusive(0, percentageToDistribute)
+          .reverse
+          .flatMap(weight => acc.map(v => StockWeight(stocksNames.head, weight.toDouble / 100) +: v)))
     }
 
 }

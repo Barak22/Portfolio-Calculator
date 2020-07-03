@@ -22,7 +22,7 @@ case class CovData(
                     cov: Double
                   )
 
-case class StockWeight(stockName: String, weight: Int)
+case class StockWeight(stockName: String, weight: Double)
 
 case class VectorWeights(weights: Seq[StockWeight])
 
