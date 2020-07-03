@@ -5,6 +5,7 @@ import com.portfolio.data_reader.DataReader
 import com.portfolio.domain.{ CovData, IndexRawData, IndexReturnData, ReturnData }
 import com.portfolio.returns.ReturnsCalculator
 import com.portfolio.variance.VarianceCalculator
+import com.portfolio.vector.VectorCreator
 
 class PortfolioCalculatorService(dataReader: DataReader,
                                  returnsCalculator: ReturnsCalculator,
@@ -38,7 +39,8 @@ class PortfolioCalculatorService(dataReader: DataReader,
         CovData(s1.stockFileName, s2.stockFileName, cov)
       }
 
-    varianceCalculator.calcMinimalVarianceForReturn(stocksNames, covData, indexesEr, desiredReturn)
+    val vectors = VectorCreator.createVectors(stocksNames)
+    varianceCalculator.calcVariance(vectors, covData)
 
     // find the min variance vector for a desired E(r).
   }

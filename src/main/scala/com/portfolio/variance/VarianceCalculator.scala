@@ -1,10 +1,7 @@
 package com.portfolio.variance
 
-import com.portfolio.domain.{ CovData, StockWeight }
+import com.portfolio.domain.{ CovData, VectorVariance, VectorWeights }
 
 trait VarianceCalculator {
-  def calcMinimalVarianceForReturn(stocksNames: Seq[String],
-                                   covData: Seq[CovData],
-                                   indexesEr: Map[String, Double],
-                                   desiredReturn: Int): Option[Seq[StockWeight]]
+  def calcVariance(vectors: Seq[VectorWeights], covData: Seq[CovData]): Seq[VectorVariance]
 }

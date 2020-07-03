@@ -1,11 +1,13 @@
 package com.portfolio.variance
 
-import com.portfolio.domain.{ CovData, StockWeight, VectorVariance, VectorWeights }
-import com.portfolio.vector.VectorCreator
+import com.portfolio.domain.{ CovData, VectorVariance, VectorWeights }
 
 class DefaultVarianceCalculator extends VarianceCalculator {
 
-  def calcVariance(vectors: Seq[VectorWeights], covData: Seq[CovData], acc: Seq[VectorVariance]): Seq[VectorVariance] = {
+  override def calcVariance(vectors: Seq[VectorWeights], covData: Seq[CovData]): Seq[VectorVariance] =
+    calcVarianceHelper(vectors, covData, Nil)
+
+  def calcVarianceHelper(vectors: Seq[VectorWeights], covData: Seq[CovData], acc: Seq[VectorVariance]): Seq[VectorVariance] = {
     if (vectors.isEmpty) acc
     else {
       val vector = vectors.head.weights
@@ -22,17 +24,8 @@ class DefaultVarianceCalculator extends VarianceCalculator {
           }.sum
       }.sum
 
-      calcVariance(vectors.tail, covData, acc :+ VectorVariance(vector, variance))
+      calcVarianceHelper(vectors.tail, covData, acc :+ VectorVariance(vector, variance))
     }
   }
 
-  override def calcMinimalVarianceForReturn(stocksNames: Seq[String],
-                                            covData: Seq[CovData],
-                                            indexesEr: Map[String, Double],
-                                            desiredReturn: Int): Option[Seq[StockWeight]] = {
-    val vectors = VectorCreator.createVectors(stocksNames, 100)
-    val variance = calcVariance(vectors, covData, Nil)
-    //        val Er = calaReturn(vectors)
-    ???
-  }
 }

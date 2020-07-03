@@ -22,7 +22,7 @@ object VectorCreator {
      */
 
   // will generate the columns of the matrix
-  def createVectors(stocksNames: Seq[String], percentageToDistribute: Int): Seq[VectorWeights] =
+  def createVectors(stocksNames: Seq[String], percentageToDistribute: Int = 100): Seq[VectorWeights] =
     createAllPermutations(stocksNames, percentageToDistribute, Seq(Nil))
       .filter(_.map(_.weight).sum == percentageToDistribute)
       .map(_.sortBy(s => s.stockName))
