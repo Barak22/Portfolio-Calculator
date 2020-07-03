@@ -2,7 +2,7 @@ package com.portfolio.service
 
 import com.portfolio.cov.CovCalculator
 import com.portfolio.data_reader.DataReader
-import com.portfolio.domain.{ CovData, IndexRawData, IndexReturnData, ReturnData }
+import com.portfolio.domain.{ CovData, IndexRawData, ReturnData, StockReturnData }
 import com.portfolio.returns.ReturnsCalculator
 import com.portfolio.variance.VarianceCalculator
 import com.portfolio.vector.VectorCreator
@@ -15,10 +15,10 @@ class PortfolioCalculatorService(dataReader: DataReader,
   def calculateMarketPortfolio() = {
     val indexesRawData: Seq[IndexRawData] = dataReader.readFiles()
     val stocksNames = indexesRawData.map(_.stockFileName)
-    val indexesReturns: Seq[IndexReturnData] = indexesRawData.map {
+    val indexesReturns: Seq[StockReturnData] = indexesRawData.map {
       indexRawData =>
         val indexReturns: Seq[ReturnData] = returnsCalculator.calculateReturns(indexRawData.stockData)
-        IndexReturnData(indexRawData.stockFileName, indexReturns)
+        StockReturnData(indexRawData.stockFileName, indexReturns)
     }
 
     val indexesEr: Map[String, Double] = indexesReturns
