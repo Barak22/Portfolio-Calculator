@@ -1,8 +1,7 @@
-package com.portfolio.returns_calculator
+package com.portfolio.returns
 
 import com.portfolio.converters.Converters.`String -> DateTime`
 import com.portfolio.domain.{ RawLine, ReturnData }
-import com.portfolio.returns.DefaultReturnsCalculator
 import org.specs2.mutable.Specification
 
 class DefaultReturnsCalculatorTest extends Specification {
