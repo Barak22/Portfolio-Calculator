@@ -1,5 +1,9 @@
 package com.portfolio.returns
 
-class PortfolioReturnCalculator {
+import com.portfolio.domain.{ VectorReturn, VectorWeights }
+
+trait PortfolioReturnCalculator {
+
+  def calcReturn(indexesEr: Map[String, Double], vectors: Seq[VectorWeights]): Seq[VectorReturn]
 
 }
