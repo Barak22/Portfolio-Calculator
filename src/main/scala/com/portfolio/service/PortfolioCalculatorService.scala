@@ -2,7 +2,7 @@ package com.portfolio.service
 
 import com.portfolio.cov.CovCalculator
 import com.portfolio.data_reader.DataReader
-import com.portfolio.domain.{ CovData, IndexRawData, IndexReturnData, ReturnData, VectorData }
+import com.portfolio.domain.{ CovData, IndexRawData, IndexReturnData, ReturnData }
 import com.portfolio.returns.ReturnsCalculator
 import com.portfolio.variance.VarianceCalculator
 
