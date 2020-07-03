@@ -1,6 +1,6 @@
 package com.portfolio.variance
 
-import com.portfolio.domain.VectorData
+import com.portfolio.domain.{ CovData, StockWeight, VectorVariance, VectorWeights }
 import org.specs2.mutable.Specification
 import org.specs2.specification.Scope
 
@@ -19,32 +19,62 @@ class DefaultVarianceCalculatorTest extends Specification {
     "generateVectors" >> {
       "generate vectors for 1 stock" in new Context {
         varianceCalculator.createVectors(Seq("stock1"), 3) must
-          containTheSameElementsAs(Seq(Seq(VectorData("stock1",3))))
+          containTheSameElementsAs(Seq(VectorWeights(Seq(StockWeight("stock1", 3)))))
       }
 
       "generate vectors for 2 stocks" in new Context {
         varianceCalculator.createVectors(Seq("stock1", "stock2"), 3) must
           containTheSameElementsAs(Seq(
-            Seq(VectorData("stock1", 3), VectorData("stock2", 0)),
-            Seq(VectorData("stock1", 2), VectorData("stock2", 1)),
-            Seq(VectorData("stock1", 1), VectorData("stock2", 2)),
-            Seq(VectorData("stock1", 0), VectorData("stock2", 3))))
+            VectorWeights(Seq(StockWeight("stock1", 3), StockWeight("stock2", 0))),
+            VectorWeights(Seq(StockWeight("stock1", 2), StockWeight("stock2", 1))),
+            VectorWeights(Seq(StockWeight("stock1", 1), StockWeight("stock2", 2))),
+            VectorWeights(Seq(StockWeight("stock1", 0), StockWeight("stock2", 3)))))
       }
 
       "generate vectors for 3 stocks" in new Context {
         varianceCalculator.createVectors(Seq("stock1", "stock2", "stock3"), 3) must
           containTheSameElementsAs(Seq(
-            Seq(VectorData("stock1", 3), VectorData("stock2", 0), VectorData("stock3", 0)),
-            Seq(VectorData("stock1", 2), VectorData("stock2", 1), VectorData("stock3", 0)),
-            Seq(VectorData("stock1", 2), VectorData("stock2", 0), VectorData("stock3", 1)),
-            Seq(VectorData("stock1", 1), VectorData("stock2", 2), VectorData("stock3", 0)),
-            Seq(VectorData("stock1", 1), VectorData("stock2", 1), VectorData("stock3", 1)),
-            Seq(VectorData("stock1", 1), VectorData("stock2", 0), VectorData("stock3", 2)),
-            Seq(VectorData("stock1", 0), VectorData("stock2", 3), VectorData("stock3", 0)),
-            Seq(VectorData("stock1", 0), VectorData("stock2", 2), VectorData("stock3", 1)),
-            Seq(VectorData("stock1", 0), VectorData("stock2", 1), VectorData("stock3", 2)),
-            Seq(VectorData("stock1", 0), VectorData("stock2", 0), VectorData("stock3", 3))))
+            VectorWeights(Seq(StockWeight("stock1", 3), StockWeight("stock2", 0), StockWeight("stock3", 0))),
+            VectorWeights(Seq(StockWeight("stock1", 2), StockWeight("stock2", 1), StockWeight("stock3", 0))),
+            VectorWeights(Seq(StockWeight("stock1", 2), StockWeight("stock2", 0), StockWeight("stock3", 1))),
+            VectorWeights(Seq(StockWeight("stock1", 1), StockWeight("stock2", 2), StockWeight("stock3", 0))),
+            VectorWeights(Seq(StockWeight("stock1", 1), StockWeight("stock2", 1), StockWeight("stock3", 1))),
+            VectorWeights(Seq(StockWeight("stock1", 1), StockWeight("stock2", 0), StockWeight("stock3", 2))),
+            VectorWeights(Seq(StockWeight("stock1", 0), StockWeight("stock2", 3), StockWeight("stock3", 0))),
+            VectorWeights(Seq(StockWeight("stock1", 0), StockWeight("stock2", 2), StockWeight("stock3", 1))),
+            VectorWeights(Seq(StockWeight("stock1", 0), StockWeight("stock2", 1), StockWeight("stock3", 2))),
+            VectorWeights(Seq(StockWeight("stock1", 0), StockWeight("stock2", 0), StockWeight("stock3", 3)))))
       }
+    }
+
+    "calcVariance" >> {
+      "calculate the variance for 1 stock 1 vector" in new Context {
+        varianceCalculator.calcVariance(Seq(VectorWeights(Seq(StockWeight("stock1", 3)))), Seq(CovData("stock1", "stock1", 0.00001)), Nil) must
+          containTheSameElementsAs(Seq(VectorVariance(Seq(StockWeight("stock1", 3)), 0.00009)))
+      }
+
+      "calculate the variance for 2 stocks 1 vector" in new Context {
+        varianceCalculator.calcVariance(
+          Seq(VectorWeights(Seq(StockWeight("stock1", 2), StockWeight("stock2", 1)))),
+          Seq(CovData("stock1", "stock1", 0.00001),
+            CovData("stock1", "stock2", 0.00004),
+            CovData("stock2", "stock1", 0.00004),
+            CovData("stock2", "stock2", 0.00009)), Nil) must
+          containTheSameElementsAs(Seq(VectorVariance(Seq(StockWeight("stock1", 2), StockWeight("stock2", 1)), 0.00029)))
+      }
+
+      "calculate the variance for 2 stocks and 2 vectors" in new Context {
+        varianceCalculator.calcVariance(
+          Seq(VectorWeights(Seq(StockWeight("stock1", 3), StockWeight("stock2", 0))), VectorWeights(Seq(StockWeight("stock1", 2), StockWeight("stock2", 1)))),
+          Seq(CovData("stock1", "stock1", 0.00001),
+            CovData("stock1", "stock2", 0.00004),
+            CovData("stock2", "stock1", 0.00004),
+            CovData("stock2", "stock2", 0.00009)), Nil) must
+          containTheSameElementsAs(
+            Seq(VectorVariance(Seq(StockWeight("stock1", 3), StockWeight("stock2", 0)), 0.00009),
+              VectorVariance(Seq(StockWeight("stock1", 2), StockWeight("stock2", 1)), 0.00029)))
+      }
+
     }
 
   }
