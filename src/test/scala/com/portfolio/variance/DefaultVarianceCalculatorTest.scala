@@ -16,37 +16,6 @@ class DefaultVarianceCalculatorTest extends Specification {
     //      beSome(Seq(VectorData(index1, 100)))
     //    }
 
-    "generateVectors" >> {
-      "generate vectors for 1 stock" in new Context {
-        varianceCalculator.createVectors(Seq("stock1"), 3) must
-          containTheSameElementsAs(Seq(VectorWeights(Seq(StockWeight("stock1", 3)))))
-      }
-
-      "generate vectors for 2 stocks" in new Context {
-        varianceCalculator.createVectors(Seq("stock1", "stock2"), 3) must
-          containTheSameElementsAs(Seq(
-            VectorWeights(Seq(StockWeight("stock1", 3), StockWeight("stock2", 0))),
-            VectorWeights(Seq(StockWeight("stock1", 2), StockWeight("stock2", 1))),
-            VectorWeights(Seq(StockWeight("stock1", 1), StockWeight("stock2", 2))),
-            VectorWeights(Seq(StockWeight("stock1", 0), StockWeight("stock2", 3)))))
-      }
-
-      "generate vectors for 3 stocks" in new Context {
-        varianceCalculator.createVectors(Seq("stock1", "stock2", "stock3"), 3) must
-          containTheSameElementsAs(Seq(
-            VectorWeights(Seq(StockWeight("stock1", 3), StockWeight("stock2", 0), StockWeight("stock3", 0))),
-            VectorWeights(Seq(StockWeight("stock1", 2), StockWeight("stock2", 1), StockWeight("stock3", 0))),
-            VectorWeights(Seq(StockWeight("stock1", 2), StockWeight("stock2", 0), StockWeight("stock3", 1))),
-            VectorWeights(Seq(StockWeight("stock1", 1), StockWeight("stock2", 2), StockWeight("stock3", 0))),
-            VectorWeights(Seq(StockWeight("stock1", 1), StockWeight("stock2", 1), StockWeight("stock3", 1))),
-            VectorWeights(Seq(StockWeight("stock1", 1), StockWeight("stock2", 0), StockWeight("stock3", 2))),
-            VectorWeights(Seq(StockWeight("stock1", 0), StockWeight("stock2", 3), StockWeight("stock3", 0))),
-            VectorWeights(Seq(StockWeight("stock1", 0), StockWeight("stock2", 2), StockWeight("stock3", 1))),
-            VectorWeights(Seq(StockWeight("stock1", 0), StockWeight("stock2", 1), StockWeight("stock3", 2))),
-            VectorWeights(Seq(StockWeight("stock1", 0), StockWeight("stock2", 0), StockWeight("stock3", 3)))))
-      }
-    }
-
     "calcVariance" >> {
       "calculate the variance for 1 stock 1 vector" in new Context {
         varianceCalculator.calcVariance(Seq(VectorWeights(Seq(StockWeight("stock1", 3)))), Seq(CovData("stock1", "stock1", 0.00001)), Nil) must
@@ -81,11 +50,6 @@ class DefaultVarianceCalculatorTest extends Specification {
 
 
   trait Context extends Scope {
-    val index1 = "index1"
-
-    //    def haveTheSameVectorsAs(expected: Seq[Seq[Int]]): Matcher[Seq[Seq[Int]]] =
-    //      (actual: Seq[Seq[Int]]) =>
-    //        actual.foreach(vector => vector must containTheSameElementsAs())
   }
 
 }
