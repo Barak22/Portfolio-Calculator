@@ -21,7 +21,7 @@ class CsvDataReader(path: String) extends DataReader {
                 val date = line("Date")
                 val adjClose = line("Adj Close")
                 RawLine(DateTime.parse(date), adjClose.toDouble)
-            }
+            }.sortWith((r1, r2) => r1.date.isAfter(r2.date))
 
         IndexRawData(filePath.split("/").last, stockData)
     }
