@@ -12,7 +12,7 @@ class DefaultCovCalculatorTest extends Specification {
       val s2: Seq[Double] = Seq(2, 8, 18, 20, 28)
       val s1Er = PortfolioCalculatorService.calcAverageReturn(s1)
       val s2Er = PortfolioCalculatorService.calcAverageReturn(s2)
-      covCalculator.clacCov(s1,s2,s1Er,s2Er) must
+      covCalculator.clacCov(s1, s2, s1Er, s2Er) must
         beEqualTo(146.1)
     }
 
