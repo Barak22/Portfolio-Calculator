@@ -13,6 +13,8 @@ class PortfolioCalculatorService(dataReader: DataReader,
                                  varianceCalculator: VarianceCalculator,
                                  portfolioReturnCalculator: PortfolioReturnCalculator,
                                  desiredReturn: 10) {
+
+  // TODO: Need to refactor this method
   def calculateMarketPortfolio() = {
     val indexesRawData: Seq[IndexRawData] = dataReader.readFiles()
     val stocksNames = indexesRawData.map(_.stockFileName)
@@ -23,6 +25,7 @@ class PortfolioCalculatorService(dataReader: DataReader,
         StockReturnData(indexRawData.stockFileName, indexReturns)
     }
 
+    // The E(r) is per month!!
     val stocksEr: Map[String, Double] = indexesReturns
       .map(i =>
         i.stockFileName -> PortfolioCalculatorService.calcAverageReturn(i.stockData.map(_.r))).toMap
@@ -58,6 +61,6 @@ class PortfolioCalculatorService(dataReader: DataReader,
 
 object PortfolioCalculatorService {
   def calcAverageReturn(returns: Seq[Double]) = {
-    returns.sum / returns.size
+    Math.pow(returns.sum / returns.size, 12)
   }
 }
