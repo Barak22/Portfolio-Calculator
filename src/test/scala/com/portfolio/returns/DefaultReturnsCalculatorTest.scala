@@ -5,7 +5,7 @@ import com.portfolio.domain.{ RawLine, ReturnData }
 import org.specs2.mutable.Specification
 
 class DefaultReturnsCalculatorTest extends Specification {
-
+  // TODO: Need to fix the calculation of the E(r)
   private val returnsCalculator = new DefaultReturnsCalculator()
 
   "ReturnsCalculator" should {
@@ -20,7 +20,7 @@ class DefaultReturnsCalculatorTest extends Specification {
       val stockData = Seq(RawLine("2020-05-28".toDateTime, 303.070007), RawLine("2020-05-01".toDateTime, 302.970001))
 
       returnsCalculator.calculateReturns(stockData) must
-        beEqualTo(Seq(ReturnData("2020-05-28".toDateTime, 0.03)))
+        beEqualTo(Seq(ReturnData("2020-05-28".toDateTime, 0.00033003101969361886)))
 
     }
 
@@ -32,7 +32,7 @@ class DefaultReturnsCalculatorTest extends Specification {
       )
 
       returnsCalculator.calculateReturns(stockData) must
-        beEqualTo(Seq(ReturnData("2020-05-28".toDateTime, 0.03), ReturnData("2020-05-01".toDateTime, 4.21)))
+        beEqualTo(Seq(ReturnData("2020-05-28".toDateTime, 0.00033003101969361886), ReturnData("2020-05-01".toDateTime, 0.0420990290327968)))
 
     }
   }
