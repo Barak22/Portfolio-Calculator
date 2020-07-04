@@ -17,7 +17,6 @@ class DefaultReturnsCalculator extends ReturnsCalculator {
     else {
       val firstData :: secondData :: Nil = window.next()
       val r = Math.log(firstData.adjClose / secondData.adjClose)
-//      val preciseR = Math.round(r * 100).toInt.toDouble / 100
 
       val returnData = ReturnData(firstData.date, r)
       doCalculation(window, acc :+ returnData)
