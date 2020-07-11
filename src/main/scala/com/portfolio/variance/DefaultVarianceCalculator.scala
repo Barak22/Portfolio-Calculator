@@ -2,12 +2,15 @@ package com.portfolio.variance
 
 import com.portfolio.domain.{ CovData, VectorReturn, VectorVariance }
 
+import scala.annotation.tailrec
+
 class DefaultVarianceCalculator extends VarianceCalculator {
 
   override def calcVariance(vectors: Seq[VectorReturn], covData: Seq[CovData]): Seq[VectorVariance] =
     calcVarianceHelper(vectors, covData, Nil)
 
-  def calcVarianceHelper(vectors: Seq[VectorReturn], covData: Seq[CovData], acc: Seq[VectorVariance]): Seq[VectorVariance] = {
+  @tailrec
+  private def calcVarianceHelper(vectors: Seq[VectorReturn], covData: Seq[CovData], acc: Seq[VectorVariance]): Seq[VectorVariance] = {
     if (vectors.isEmpty) acc
     else {
       val vector = vectors.head.weights
