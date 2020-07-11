@@ -2,6 +2,7 @@ package com.portfolio.app
 
 import com.portfolio.cov.DefaultCovCalculator
 import com.portfolio.data_reader.CsvDataReader
+import com.portfolio.measure.DurationMeasurer
 import com.portfolio.returns.{ DefaultPortfolioReturnCalculator, DefaultReturnsCalculator }
 import com.portfolio.service.PortfolioCalculatorService
 import com.portfolio.variance.DefaultVarianceCalculator
@@ -13,6 +14,7 @@ object MyApp extends App {
   val covCalculator = new DefaultCovCalculator()
   val varianceCalculator = new DefaultVarianceCalculator()
   val portfolioReturnCalculator = new DefaultPortfolioReturnCalculator()
+  val measurer = new DurationMeasurer()
 
   new PortfolioCalculatorService(
     dataReader,
@@ -20,5 +22,6 @@ object MyApp extends App {
     covCalculator,
     varianceCalculator,
     portfolioReturnCalculator,
-    10).calculateMarketPortfolio()
+    desiredReturn = 10,
+    measurer = measurer).calculateMarketPortfolio()
 }

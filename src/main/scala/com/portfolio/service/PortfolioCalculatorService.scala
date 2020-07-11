@@ -3,6 +3,7 @@ package com.portfolio.service
 import com.portfolio.cov.CovCalculator
 import com.portfolio.data_reader.DataReader
 import com.portfolio.domain.{ CovData, IndexRawData, ReturnData, StockReturnData }
+import com.portfolio.measure.DurationMeasurer
 import com.portfolio.returns.{ PortfolioReturnCalculator, ReturnsCalculator }
 import com.portfolio.stdev.STDEVCalculator
 import com.portfolio.variance.VarianceCalculator
@@ -13,7 +14,8 @@ class PortfolioCalculatorService(dataReader: DataReader,
                                  covCalculator: CovCalculator,
                                  varianceCalculator: VarianceCalculator,
                                  portfolioReturnCalculator: PortfolioReturnCalculator,
-                                 desiredReturn: Int) {
+                                 desiredReturn: Int,
+                                 measurer: DurationMeasurer) {
 
   // TODO: Need to refactor this method
   def calculateMarketPortfolio(): Unit = {
@@ -49,7 +51,7 @@ class PortfolioCalculatorService(dataReader: DataReader,
       }
 
     println(s"covData = $covData")
-    val vectors = VectorCreator.createVectors(stocksNames)
+    val vectors = measurer.measure("VectorCreator.createVectors", VectorCreator.createVectors(stocksNames))
     val vectorsForDesiredEr = portfolioReturnCalculator.calcReturn(yearlyStocksEr, vectors)
       .filter(v => v.Er > ((desiredReturn - 2).toDouble / 100) && v.Er < (desiredReturn + 2).toDouble / 100)
     println(s"monthlyStocksEr = $monthlyStocksEr")

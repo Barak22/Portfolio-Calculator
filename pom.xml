@@ -45,5 +45,14 @@
             <artifactId>dense64</artifactId>
             <version>0.30</version>
         </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.specs2/specs2-mock -->
+        <dependency>
+            <groupId>org.specs2</groupId>
+            <artifactId>specs2-mock_2.13</artifactId>
+            <version>4.10.0</version>
+            <scope>test</scope>
+        </dependency>
+
     </dependencies>
 </project>
