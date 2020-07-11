@@ -37,12 +37,13 @@ case class VectorWeights(
                           weights: Seq[StockWeight]
                         )
 
-case class VectorVariance(
-                           weights: Seq[StockWeight],
-                           variance: Double
-                         )
-
 case class VectorReturn(
                          weights: Seq[StockWeight],
                          Er: Double
                        )
+
+case class VectorVariance(
+                           weights: Seq[StockWeight],
+                           Er: Double,
+                           variance: Double
+                         )

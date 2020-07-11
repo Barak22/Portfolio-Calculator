@@ -1,7 +1,7 @@
 package com.portfolio.variance
 
-import com.portfolio.domain.{ CovData, VectorVariance, VectorWeights }
+import com.portfolio.domain.{ CovData, VectorReturn, VectorVariance }
 
 trait VarianceCalculator {
-  def calcVariance(vectors: Seq[VectorWeights], covData: Seq[CovData]): Seq[VectorVariance]
+  def calcVariance(vectors: Seq[VectorReturn], covData: Seq[CovData]): Seq[VectorVariance]
 }

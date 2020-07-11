@@ -54,9 +54,10 @@ class PortfolioCalculatorService(dataReader: DataReader,
     println(s"monthlyStocksEr = $monthlyStocksEr")
     println(s"yearlyStocksEr = $yearlyStocksEr")
     println(s"vectorsForDesiredEr = $vectorsForDesiredEr")
-    //    varianceCalculator.calcVariance(vectorsForDesiredEr, covData)
+    val vectorsWithVariance = varianceCalculator.calcVariance(vectorsForDesiredEr, covData)
+      .sortBy(s => (s.variance, s.Er))
 
-    // find the min variance vector for a desired E(r).
+    println(s"vectorsWithVariance = ${vectorsWithVariance}")
   }
 
 

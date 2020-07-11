@@ -1,13 +1,13 @@
 package com.portfolio.variance
 
-import com.portfolio.domain.{ CovData, VectorVariance, VectorWeights }
+import com.portfolio.domain.{ CovData, VectorReturn, VectorVariance }
 
 class DefaultVarianceCalculator extends VarianceCalculator {
 
-  override def calcVariance(vectors: Seq[VectorWeights], covData: Seq[CovData]): Seq[VectorVariance] =
+  override def calcVariance(vectors: Seq[VectorReturn], covData: Seq[CovData]): Seq[VectorVariance] =
     calcVarianceHelper(vectors, covData, Nil)
 
-  def calcVarianceHelper(vectors: Seq[VectorWeights], covData: Seq[CovData], acc: Seq[VectorVariance]): Seq[VectorVariance] = {
+  def calcVarianceHelper(vectors: Seq[VectorReturn], covData: Seq[CovData], acc: Seq[VectorVariance]): Seq[VectorVariance] = {
     if (vectors.isEmpty) acc
     else {
       val vector = vectors.head.weights
@@ -24,7 +24,7 @@ class DefaultVarianceCalculator extends VarianceCalculator {
           }.sum
       }.sum
 
-      calcVarianceHelper(vectors.tail, covData, acc :+ VectorVariance(vector, variance))
+      calcVarianceHelper(vectors.tail, covData, acc :+ VectorVariance(vector, vectors.head.Er, variance))
     }
   }
 
