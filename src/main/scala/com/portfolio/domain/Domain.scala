@@ -47,3 +47,9 @@ case class VectorVariance(
                            Er: Double,
                            variance: Double
                          )
+
+case class VectorStdev(
+                        weights: Seq[StockWeight],
+                        Er: Double,
+                        stdev: Double
+                      )

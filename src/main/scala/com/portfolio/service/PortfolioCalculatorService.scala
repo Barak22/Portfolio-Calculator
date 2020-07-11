@@ -4,6 +4,7 @@ import com.portfolio.cov.CovCalculator
 import com.portfolio.data_reader.DataReader
 import com.portfolio.domain.{ CovData, IndexRawData, ReturnData, StockReturnData }
 import com.portfolio.returns.{ PortfolioReturnCalculator, ReturnsCalculator }
+import com.portfolio.stdev.STDEVCalculator
 import com.portfolio.variance.VarianceCalculator
 import com.portfolio.vector.VectorCreator
 
@@ -55,7 +56,10 @@ class PortfolioCalculatorService(dataReader: DataReader,
     println(s"yearlyStocksEr = $yearlyStocksEr")
     println(s"vectorsForDesiredEr = $vectorsForDesiredEr")
     val vectorsWithVariance = varianceCalculator.calcVariance(vectorsForDesiredEr, covData)
-      .sortBy(s => (s.variance, s.Er))
+    val vectorsWithStandardDeviation = STDEVCalculator.calculateStdev(vectorsWithVariance)
+
+    vectorsWithStandardDeviation
+      .sortBy(vectorStdev => (vectorStdev.stdev, vectorStdev.Er))
 
     println(s"vectorsWithVariance = ${vectorsWithVariance}")
   }
