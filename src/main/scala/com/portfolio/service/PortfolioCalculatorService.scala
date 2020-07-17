@@ -1,7 +1,7 @@
 package com.portfolio.service
 
 import com.portfolio.cov.CovCalculator
-import com.portfolio.data_reader.DataReader
+import com.portfolio.io.DataReader
 import com.portfolio.domain._
 import com.portfolio.measure.DurationMeasurer
 import com.portfolio.returns.{ PortfolioReturnCalculator, ReturnsCalculator }

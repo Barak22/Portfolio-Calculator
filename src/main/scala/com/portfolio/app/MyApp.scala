@@ -1,7 +1,7 @@
 package com.portfolio.app
 
 import com.portfolio.cov.DefaultCovCalculator
-import com.portfolio.data_reader.CsvDataReader
+import com.portfolio.io.CsvDataReader
 import com.portfolio.measure.DurationMeasurer
 import com.portfolio.returns.{ DefaultPortfolioReturnCalculator, DefaultReturnsCalculator }
 import com.portfolio.service.PortfolioCalculatorService

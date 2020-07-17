@@ -1,4 +1,4 @@
-package com.portfolio.data_reader
+package com.portfolio.io
 
 import com.portfolio.domain.{ IndexRawData, RawLine }
 import org.joda.time.DateTime
