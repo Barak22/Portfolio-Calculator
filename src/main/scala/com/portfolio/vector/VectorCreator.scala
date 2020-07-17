@@ -2,8 +2,6 @@ package com.portfolio.vector
 
 import com.portfolio.domain.{ StockWeight, VectorWeights }
 
-import scala.annotation.tailrec
-
 object VectorCreator {
   /*
     n = 3         n = 2       n = 1
@@ -21,23 +19,14 @@ object VectorCreator {
     0   0   3
      */
 
-  // will generate the columns of the matrix
-  def createVectors(stocksNames: Seq[String], percentageToDistribute: Int = 100): Seq[VectorWeights] =
-    createAllPermutations(stocksNames, percentageToDistribute, Seq(Nil))
-      .filter(_.map(_.weight).sum == (percentageToDistribute.toDouble / 100))
-      .map(_.sortBy(s => s.stockName))
-      .map(VectorWeights)
-
-  @tailrec
-  private def createAllPermutations(stocksNames: Seq[String], percentageToDistribute: Int, acc: Seq[Seq[StockWeight]]): Seq[Seq[StockWeight]] =
-    if (stocksNames.isEmpty) acc
-    else {
-      createAllPermutations(
-        stocksNames.tail,
-        percentageToDistribute,
-        Range.inclusive(0, percentageToDistribute)
-          .reverse
-          .flatMap(weight => acc.map(v => StockWeight(stocksNames.head, weight.toDouble / 100) +: v)))
+  def createVectors(stocksNames: Seq[String], percentageToDistribute: Int = 100): Seq[VectorWeights] = {
+    if (stocksNames.tail.isEmpty) {
+      Seq(VectorWeights(Seq(StockWeight(stocksNames.head, percentageToDistribute.toDouble / 100))))
+    } else {
+      for {
+        weight <- 0 to percentageToDistribute
+        vectors <- createVectors(stocksNames.tail, percentageToDistribute - weight)
+      } yield vectors.copy(weights = StockWeight(stocksNames.head, weight.toDouble / 100) +: vectors.weights)
     }
-
+  }
 }
