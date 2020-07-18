@@ -6,9 +6,8 @@ import com.portfolio.measure.DurationMeasurer
 
 class DefaultVarianceCalculator(measurer: DurationMeasurer) extends VarianceCalculator {
 
-  override def calcVariance(vectors: Seq[VectorReturn], covData: Map[String, CovData]): Iterator[VectorVariance] =
-    vectors.iterator.map(vector => calcVarianceHelper(vector, covData))
-
+  override def calcVariance(vectors: Iterator[VectorReturn], covData: Map[String, CovData]): Iterator[VectorVariance] =
+    vectors.map(vector => calcVarianceHelper(vector, covData))
 
   private def calcVarianceHelper(vector: VectorReturn, covData: Map[String, CovData]): VectorVariance = {
     val weights = vector.weights

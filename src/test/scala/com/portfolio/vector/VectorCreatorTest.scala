@@ -9,12 +9,12 @@ class VectorCreatorTest extends Specification {
   "VectorCreator" should {
     "generateVectors" >> {
       "generate vectors for 1 stock" in new Context {
-        VectorCreator.createVectors(Seq(stockName1), 3) must
+        VectorCreator.createVectors(Seq(stockName1), 3).toSeq must
           containTheSameElementsAs(Seq(VectorWeights(Seq(StockWeight(stockName1, 0.03)))))
       }
 
       "generate vectors for 2 stocks" in new Context {
-        VectorCreator.createVectors(Seq(stockName1, stockName2), 3) must
+        VectorCreator.createVectors(Seq(stockName1, stockName2), 3).toSeq must
           containTheSameElementsAs(Seq(
             VectorWeights(Seq(StockWeight(stockName1, 0.03), StockWeight(stockName2, 0))),
             VectorWeights(Seq(StockWeight(stockName1, 0.02), StockWeight(stockName2, 0.01))),
@@ -23,7 +23,7 @@ class VectorCreatorTest extends Specification {
       }
 
       "generate vectors for 3 stocks" in new Context {
-        VectorCreator.createVectors(Seq(stockName1, stockName2, stockName3), 3) must
+        VectorCreator.createVectors(Seq(stockName1, stockName2, stockName3), 3).toSeq must
           containTheSameElementsAs(Seq(
             VectorWeights(Seq(StockWeight(stockName1, 0.03), StockWeight(stockName2, 0), StockWeight(stockName3, 0))),
             VectorWeights(Seq(StockWeight(stockName1, 0.02), StockWeight(stockName2, 0.01), StockWeight(stockName3, 0))),

@@ -29,23 +29,16 @@ class PortfolioCalculatorService(dataReader: DataReader,
 
     val covData: Map[String, CovData] = calculateStocksCovariance(indexesReturns, monthlyStocksEr)
 
-    //    println(s"covData = $covData")
     val vectors = measurer.measure("VectorCreator.createVectors", VectorCreator.createVectors(stocksNames))
     val vectorsForDesiredEr = measurer.measure("filterVectorsWhichComplyDesiredReturn", filterVectorsWhichComplyDesiredReturn(yearlyStocksEr, vectors))
-    //    println(s"monthlyStocksEr = $monthlyStocksEr")
-    //    println(s"yearlyStocksEr = $yearlyStocksEr")
-    //    println(s"vectorsForDesiredEr = $vectorsForDesiredEr")
     val vectorsWithVariance = measurer.measure("varianceCalculator.calcVariance", varianceCalculator.calcVariance(vectorsForDesiredEr, covData))
     val vectorsWithStandardDeviation = measurer.measure("STDEVCalculator.calculateStdev", STDEVCalculator.calculateStdev(vectorsWithVariance))
 
-    val sortedVectors = vectorsWithStandardDeviation
-//      .sortBy(vectorStdev => (vectorStdev.stdev, vectorStdev.Er))
-
-    measurer.measure("dataWriter.writeVectors", dataWriter.writeVectors("results-with-5-indexes", sortedVectors))
+    measurer.measure("dataWriter.writeVectors", dataWriter.writeVectors("results-with-5-indexes", vectorsWithStandardDeviation))
   }
 
 
-  private def filterVectorsWhichComplyDesiredReturn(yearlyStocksEr: Map[String, Double], vectors: Seq[VectorWeights]) = {
+  private def filterVectorsWhichComplyDesiredReturn(yearlyStocksEr: Map[String, Double], vectors: Iterator[VectorWeights]) = {
     portfolioReturnCalculator.calcReturn(yearlyStocksEr, vectors)
       .filter(v => v.Er > ((desiredReturn - 2).toDouble / 100) && v.Er < (desiredReturn + 2).toDouble / 100)
   }

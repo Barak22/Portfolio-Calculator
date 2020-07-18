@@ -3,7 +3,7 @@ package com.portfolio.returns
 import com.portfolio.domain.{ StockWeight, VectorReturn, VectorWeights }
 
 class DefaultPortfolioReturnCalculator extends PortfolioReturnCalculator {
-  override def calcReturn(stocksEr: Map[String, Double], vectors: Seq[VectorWeights]): Seq[VectorReturn] = {
+  override def calcReturn(stocksEr: Map[String, Double], vectors: Iterator[VectorWeights]): Iterator[VectorReturn] = {
     vectors.map {
       case VectorWeights(weights) =>
         val Er = weights.map {

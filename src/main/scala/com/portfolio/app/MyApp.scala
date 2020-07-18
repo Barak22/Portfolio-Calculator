@@ -17,7 +17,7 @@ object MyApp extends App {
   val varianceCalculator = new DefaultVarianceCalculator(measurer)
   val portfolioReturnCalculator = new DefaultPortfolioReturnCalculator()
 
-  new PortfolioCalculatorService(
+  measurer.measure("calculateMarketPortfolio", new PortfolioCalculatorService(
     dataReader,
     dataWriter,
     returnsCalculator,
@@ -25,5 +25,5 @@ object MyApp extends App {
     varianceCalculator,
     portfolioReturnCalculator,
     desiredReturn = 10,
-    measurer = measurer).calculateMarketPortfolio()
+    measurer = measurer).calculateMarketPortfolio())
 }

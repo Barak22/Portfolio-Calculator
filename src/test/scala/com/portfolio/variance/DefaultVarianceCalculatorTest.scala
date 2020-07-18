@@ -15,13 +15,13 @@ class DefaultVarianceCalculatorTest extends Specification {
 
     "calcVariance" >> {
       "calculate the variance for 1 stock 1 vector" in new Context {
-        varianceCalculator.calcVariance(Seq(VectorReturn(Seq(StockWeight(stockName1, 0.03)), irrelevantEr)), Map(Utils.makeKeyFromTwoStocksNames(stockName1, stockName1) -> CovData(stockName1, stockName1, 0.00001))).toSeq must
+        varianceCalculator.calcVariance(Iterator(VectorReturn(Seq(StockWeight(stockName1, 0.03)), irrelevantEr)), Map(Utils.makeKeyFromTwoStocksNames(stockName1, stockName1) -> CovData(stockName1, stockName1, 0.00001))).toSeq must
           containTheSameElementsAs(Seq(VectorVariance(Seq(StockWeight(stockName1, 0.03)), irrelevantEr, 0.000000009)))
       }
 
       "calculate the variance for 2 stocks 1 vector" in new Context {
         varianceCalculator.calcVariance(
-          Seq(VectorReturn(Seq(StockWeight(stockName1, 0.02), StockWeight(stockName2, 0.01)), irrelevantEr)),
+          Iterator(VectorReturn(Seq(StockWeight(stockName1, 0.02), StockWeight(stockName2, 0.01)), irrelevantEr)),
           Map(
             Utils.makeKeyFromTwoStocksNames(stockName1, stockName1) -> CovData(stockName1, stockName1, 0.00001),
             Utils.makeKeyFromTwoStocksNames(stockName1, stockName2) -> CovData(stockName1, stockName2, 0.00004),
@@ -32,7 +32,7 @@ class DefaultVarianceCalculatorTest extends Specification {
 
       "calculate the variance for 2 stocks and 2 vectors" in new Context {
         varianceCalculator.calcVariance(
-          Seq(VectorReturn(Seq(StockWeight(stockName1, 0.03), StockWeight(stockName2, 0)), irrelevantEr), VectorReturn(Seq(StockWeight(stockName1, 0.02), StockWeight(stockName2, 0.01)), irrelevantEr)),
+          Iterator(VectorReturn(Seq(StockWeight(stockName1, 0.03), StockWeight(stockName2, 0)), irrelevantEr), VectorReturn(Seq(StockWeight(stockName1, 0.02), StockWeight(stockName2, 0.01)), irrelevantEr)),
           Map(
             Utils.makeKeyFromTwoStocksNames(stockName1, stockName1) -> CovData(stockName1, stockName1, 0.00001),
             Utils.makeKeyFromTwoStocksNames(stockName1, stockName2) -> CovData(stockName1, stockName2, 0.00004),

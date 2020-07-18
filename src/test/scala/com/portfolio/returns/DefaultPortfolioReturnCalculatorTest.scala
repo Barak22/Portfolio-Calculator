@@ -12,7 +12,7 @@ class DefaultPortfolioReturnCalculatorTest extends Specification {
     "calculate return for 1 stock 1 vector" in new Context {
       portfolioReturnCalculator.calcReturn(
         stocksReturn,
-        Seq(VectorWeights(Seq(StockWeight(stockName1, 0.03))))) must
+        Iterator(VectorWeights(Seq(StockWeight(stockName1, 0.03))))).toSeq must
         containTheSameElementsAs(
           Seq(VectorReturn(Seq(StockWeight(stockName1, 0.03)), 0.03 * stock1Er)))
     }
@@ -20,7 +20,7 @@ class DefaultPortfolioReturnCalculatorTest extends Specification {
     "calculate return for 2 stocks 1 vector" in new Context {
       val Er = 0.02 * stock1Er + 0.01 * stock2Er
       portfolioReturnCalculator.calcReturn(stocksReturn,
-        Seq(VectorWeights(Seq(StockWeight(stockName1, 0.02), StockWeight(stockName2, 0.01))))) must
+        Iterator(VectorWeights(Seq(StockWeight(stockName1, 0.02), StockWeight(stockName2, 0.01))))).toSeq must
         containTheSameElementsAs(
           Seq(VectorReturn(Seq(StockWeight(stockName1, 0.02), StockWeight(stockName2, 0.01)), Er)))
     }
@@ -28,9 +28,9 @@ class DefaultPortfolioReturnCalculatorTest extends Specification {
     "calculate return for 2 stocks and 2 vectors" in new Context {
       val Er = 0.02 * stock1Er + 0.01 * stock2Er
       portfolioReturnCalculator.calcReturn(stocksReturn,
-        Seq(
+        Iterator(
           VectorWeights(Seq(StockWeight(stockName1, 0.03), StockWeight(stockName2, 0))),
-          VectorWeights(Seq(StockWeight(stockName1, 0.02), StockWeight(stockName2, 0.01))))) must
+          VectorWeights(Seq(StockWeight(stockName1, 0.02), StockWeight(stockName2, 0.01))))).toSeq must
         containTheSameElementsAs(
           Seq(VectorReturn(Seq(StockWeight(stockName1, 0.03), StockWeight(stockName2, 0)), 0.03 * stock1Er),
             VectorReturn(Seq(StockWeight(stockName1, 0.02), StockWeight(stockName2, 0.01)), Er)))
