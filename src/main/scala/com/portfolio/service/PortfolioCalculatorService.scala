@@ -39,7 +39,7 @@ class PortfolioCalculatorService(dataReader: DataReader,
     val vectorsWithStandardDeviation = measurer.measure("STDEVCalculator.calculateStdev", STDEVCalculator.calculateStdev(vectorsWithVariance))
 
     val sortedVectors = vectorsWithStandardDeviation
-      .sortBy(vectorStdev => (vectorStdev.stdev, vectorStdev.Er))
+//      .sortBy(vectorStdev => (vectorStdev.stdev, vectorStdev.Er))
 
     measurer.measure("dataWriter.writeVectors", dataWriter.writeVectors("results-with-5-indexes", sortedVectors))
   }

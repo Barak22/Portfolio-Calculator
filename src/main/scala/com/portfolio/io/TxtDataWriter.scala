@@ -9,7 +9,7 @@ import scala.util.Try
 class TxtDataWriter extends DataWriter {
   val dir = "./src/main/resources/results"
 
-  override def writeVectors(fileName: String, vectors: Seq[VectorStdev]): Unit = {
+  override def writeVectors(fileName: String, vectors: Iterator[VectorStdev]): Unit = {
     new File(dir).mkdir()
     val writer = new PrintWriter(new File(s"$dir/$fileName"))
 
@@ -17,12 +17,6 @@ class TxtDataWriter extends DataWriter {
     writer.close()
   }
 
-  @scala.annotation.tailrec
-  private def writeVectorsToFile(writer: Writer, vectors: Seq[VectorStdev]): Unit = {
-    if (vectors.isEmpty) ()
-    else {
-      writer.write(vectors.head.toString + System.lineSeparator())
-      writeVectorsToFile(writer, vectors.tail)
-    }
-  }
+  private def writeVectorsToFile(writer: Writer, vectors: Iterator[VectorStdev]): Unit =
+    vectors.foreach(vector => writer.write(vector.toString + System.lineSeparator()))
 }

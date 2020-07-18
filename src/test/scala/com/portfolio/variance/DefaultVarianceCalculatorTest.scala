@@ -15,7 +15,7 @@ class DefaultVarianceCalculatorTest extends Specification {
 
     "calcVariance" >> {
       "calculate the variance for 1 stock 1 vector" in new Context {
-        varianceCalculator.calcVariance(Seq(VectorReturn(Seq(StockWeight(stockName1, 0.03)), irrelevantEr)), Map(Utils.makeKeyFromTwoStocksNames(stockName1, stockName1) -> CovData(stockName1, stockName1, 0.00001))) must
+        varianceCalculator.calcVariance(Seq(VectorReturn(Seq(StockWeight(stockName1, 0.03)), irrelevantEr)), Map(Utils.makeKeyFromTwoStocksNames(stockName1, stockName1) -> CovData(stockName1, stockName1, 0.00001))).toSeq must
           containTheSameElementsAs(Seq(VectorVariance(Seq(StockWeight(stockName1, 0.03)), irrelevantEr, 0.000000009)))
       }
 
@@ -26,7 +26,7 @@ class DefaultVarianceCalculatorTest extends Specification {
             Utils.makeKeyFromTwoStocksNames(stockName1, stockName1) -> CovData(stockName1, stockName1, 0.00001),
             Utils.makeKeyFromTwoStocksNames(stockName1, stockName2) -> CovData(stockName1, stockName2, 0.00004),
             Utils.makeKeyFromTwoStocksNames(stockName2, stockName1) -> CovData(stockName2, stockName1, 0.00004),
-            Utils.makeKeyFromTwoStocksNames(stockName2, stockName2) -> CovData(stockName2, stockName2, 0.00009))) must
+            Utils.makeKeyFromTwoStocksNames(stockName2, stockName2) -> CovData(stockName2, stockName2, 0.00009))).toSeq must
           containTheSameElementsAs(Seq(VectorVariance(Seq(StockWeight(stockName1, 0.02), StockWeight(stockName2, 0.01)), irrelevantEr, 0.000000029)))
       }
 
@@ -37,7 +37,7 @@ class DefaultVarianceCalculatorTest extends Specification {
             Utils.makeKeyFromTwoStocksNames(stockName1, stockName1) -> CovData(stockName1, stockName1, 0.00001),
             Utils.makeKeyFromTwoStocksNames(stockName1, stockName2) -> CovData(stockName1, stockName2, 0.00004),
             Utils.makeKeyFromTwoStocksNames(stockName2, stockName1) -> CovData(stockName2, stockName1, 0.00004),
-            Utils.makeKeyFromTwoStocksNames(stockName2, stockName2) -> CovData(stockName2, stockName2, 0.00009))) must
+            Utils.makeKeyFromTwoStocksNames(stockName2, stockName2) -> CovData(stockName2, stockName2, 0.00009))).toSeq must
           containTheSameElementsAs(
             Seq(VectorVariance(Seq(StockWeight(stockName1, 0.03), StockWeight(stockName2, 0)), irrelevantEr, 0.000000009),
               VectorVariance(Seq(StockWeight(stockName1, 0.02), StockWeight(stockName2, 0.01)), irrelevantEr, 0.000000029)))
