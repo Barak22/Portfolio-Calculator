@@ -21,14 +21,14 @@ object VectorCreator {
 
   def createVectors(stocksNames: Seq[String], percentageToDistribute: Int = 100): Iterator[VectorWeights] = {
     if (stocksNames.tail.isEmpty) {
-      Iterator(VectorWeights(Iterator(StockWeight(stocksNames.head, makeDecimal(percentageToDistribute)))))
+      Iterator(VectorWeights(Seq(StockWeight(stocksNames.head, makeDecimal(percentageToDistribute)))))
     } else {
       for {
         weight <- Range.inclusive(0, percentageToDistribute).iterator
         vectors <- createVectors(stocksNames.tail, percentageToDistribute - weight)
       } yield {
         val stockWeight = StockWeight(stocksNames.head, makeDecimal(weight))
-        vectors.copy(weights = Iterator(stockWeight) ++ vectors.weights)
+        vectors.copy(weights = stockWeight +: vectors.weights)
       }
     }
   }
