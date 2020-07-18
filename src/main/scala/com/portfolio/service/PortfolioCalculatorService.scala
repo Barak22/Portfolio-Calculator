@@ -1,7 +1,7 @@
 package com.portfolio.service
 
 import com.portfolio.cov.CovCalculator
-import com.portfolio.io.DataReader
+import com.portfolio.io.{ DataReader, DataWriter }
 import com.portfolio.domain._
 import com.portfolio.measure.DurationMeasurer
 import com.portfolio.returns.{ PortfolioReturnCalculator, ReturnsCalculator }
@@ -10,6 +10,7 @@ import com.portfolio.variance.VarianceCalculator
 import com.portfolio.vector.VectorCreator
 
 class PortfolioCalculatorService(dataReader: DataReader,
+                                 dataWriter: DataWriter,
                                  returnsCalculator: ReturnsCalculator,
                                  covCalculator: CovCalculator,
                                  varianceCalculator: VarianceCalculator,
@@ -36,10 +37,10 @@ class PortfolioCalculatorService(dataReader: DataReader,
     val vectorsWithVariance = measurer.measure("varianceCalculator.calcVariance", varianceCalculator.calcVariance(vectorsForDesiredEr, covData))
     val vectorsWithStandardDeviation = measurer.measure("STDEVCalculator.calculateStdev", STDEVCalculator.calculateStdev(vectorsWithVariance))
 
-    vectorsWithStandardDeviation
+    val sortedVectors = vectorsWithStandardDeviation
       .sortBy(vectorStdev => (vectorStdev.stdev, vectorStdev.Er))
 
-    //    println(s"vectorsWithVariance = $vectorsWithVariance")
+    measurer.measure("dataWriter.writeVectors", dataWriter.writeVectors("results-with-5-indexes", sortedVectors))
   }
 
 
