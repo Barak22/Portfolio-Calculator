@@ -34,22 +34,22 @@ case class StockWeight(
                       )
 
 case class VectorWeights(
-                          weights: Seq[StockWeight]
+                          weights: Iterator[StockWeight]
                         )
 
 case class VectorReturn(
-                         weights: Seq[StockWeight],
+                         weights: Iterator[StockWeight],
                          Er: Double
                        )
 
 case class VectorVariance(
-                           weights: Seq[StockWeight],
+                           weights: Iterator[StockWeight],
                            Er: Double,
                            variance: Double
                          )
 
 case class VectorStdev(
-                        weights: Seq[StockWeight],
+                        weights: Iterator[StockWeight],
                         Er: Double,
                         stdev: Double
                       )
