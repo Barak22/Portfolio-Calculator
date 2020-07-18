@@ -1,8 +1,9 @@
 package com.portfolio.service
 
 import com.portfolio.cov.CovCalculator
-import com.portfolio.io.{ DataReader, DataWriter }
 import com.portfolio.domain._
+import com.portfolio.helper.Utils
+import com.portfolio.io.{ DataReader, DataWriter }
 import com.portfolio.measure.DurationMeasurer
 import com.portfolio.returns.{ PortfolioReturnCalculator, ReturnsCalculator }
 import com.portfolio.stdev.STDEVCalculator
@@ -26,7 +27,7 @@ class PortfolioCalculatorService(dataReader: DataReader,
     val monthlyStocksEr: Map[String, Double] = calculateTheMonthlyAverageReturnPerStock(indexesReturns)
     val yearlyStocksEr: Map[String, Double] = calculateTheAnnualAverageReturnPerStock(indexesReturns)
 
-    val covData: Seq[CovData] = calculateStocksCovariance(indexesReturns, monthlyStocksEr)
+    val covData: Map[String, CovData] = calculateStocksCovariance(indexesReturns, monthlyStocksEr)
 
     //    println(s"covData = $covData")
     val vectors = measurer.measure("VectorCreator.createVectors", VectorCreator.createVectors(stocksNames))
@@ -50,7 +51,7 @@ class PortfolioCalculatorService(dataReader: DataReader,
   }
 
   private def calculateStocksCovariance(indexesReturns: Seq[StockReturnData], monthlyStocksEr: Map[String, Double]) = {
-    for {
+    (for {
       s1 <- indexesReturns
       s2 <- indexesReturns
     } yield {
@@ -60,8 +61,8 @@ class PortfolioCalculatorService(dataReader: DataReader,
       val s2Er = monthlyStocksEr(s2.stockFileName)
 
       val cov = covCalculator.clacCov(s1Returns, s2Returns, s1Er, s2Er)
-      CovData(s1.stockFileName, s2.stockFileName, cov)
-    }
+      Utils.makeKeyFromTwoStocksNames(s1.stockFileName, s2.stockFileName) -> CovData(s1.stockFileName, s2.stockFileName, cov)
+    }).toMap
   }
 
   private def calculateTheAnnualAverageReturnPerStock(indexesReturns: Seq[StockReturnData]) = {

@@ -1,16 +1,18 @@
 package com.portfolio.variance
 
 import com.portfolio.domain.{ CovData, VectorReturn, VectorVariance }
+import com.portfolio.helper.Utils
+import com.portfolio.measure.DurationMeasurer
 
 import scala.annotation.tailrec
 
-class DefaultVarianceCalculator extends VarianceCalculator {
+class DefaultVarianceCalculator(measurer: DurationMeasurer) extends VarianceCalculator {
 
-  override def calcVariance(vectors: Seq[VectorReturn], covData: Seq[CovData]): Seq[VectorVariance] =
+  override def calcVariance(vectors: Seq[VectorReturn], covData: Map[String, CovData]): Seq[VectorVariance] =
     calcVarianceHelper(vectors, covData, Nil)
 
   @tailrec
-  private def calcVarianceHelper(vectors: Seq[VectorReturn], covData: Seq[CovData], acc: Seq[VectorVariance]): Seq[VectorVariance] = {
+  private def calcVarianceHelper(vectors: Seq[VectorReturn], covData: Map[String, CovData], acc: Seq[VectorVariance]): Seq[VectorVariance] = {
     if (vectors.isEmpty) acc
     else {
       val vector = vectors.head.weights
@@ -18,11 +20,7 @@ class DefaultVarianceCalculator extends VarianceCalculator {
         s1 =>
           vector.map {
             s2 =>
-              val cov = covData.find(c =>
-                (c.s1.equals(s1.stockName) && c.s2.equals(s2.stockName)) ||
-                  (c.s2.equals(s1.stockName) && c.s1.equals(s2.stockName))
-              ).get.cov
-
+              val cov = covData(Utils.makeKeyFromTwoStocksNames(s1.stockName, s2.stockName)).cov
               roundNumber(s1.weight * s2.weight * cov)
           }.sum
       }.sum
