@@ -24,7 +24,7 @@ object VectorCreator {
       Iterator(VectorWeights(Seq(StockWeight(stocksNames.head, makeDecimal(percentageToDistribute)))))
     } else {
       for {
-        weight <- Range.inclusive(0, percentageToDistribute).iterator
+        weight <- Range.inclusive(0, percentageToDistribute, 5).iterator
         vectors <- createVectors(stocksNames.tail, percentageToDistribute - weight)
       } yield {
         val stockWeight = StockWeight(stocksNames.head, makeDecimal(weight))
