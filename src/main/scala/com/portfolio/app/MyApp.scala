@@ -1,7 +1,7 @@
 package com.portfolio.app
 
 import com.portfolio.cov.DefaultCovCalculator
-import com.portfolio.io.{ CsvDataReader, TxtDataWriter }
+import com.portfolio.io.{ CsvDataReader, CsvDataWriter, TxtDataWriter }
 import com.portfolio.measure.DurationMeasurer
 import com.portfolio.returns.{ DefaultPortfolioReturnCalculator, DefaultReturnsCalculator }
 import com.portfolio.service.PortfolioCalculatorService
@@ -11,7 +11,7 @@ object MyApp extends App {
   val pathToData = "./src/main/resources/market-portfolio"
   val measurer = new DurationMeasurer()
   val dataReader = new CsvDataReader(pathToData)
-  val dataWriter = new TxtDataWriter()
+  val dataWriter = new CsvDataWriter()
   val returnsCalculator = new DefaultReturnsCalculator()
   val covCalculator = new DefaultCovCalculator()
   val varianceCalculator = new DefaultVarianceCalculator(measurer)
