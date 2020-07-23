@@ -2,7 +2,7 @@ package com.portfolio.service
 
 import com.portfolio.cov.CovCalculator
 import com.portfolio.domain._
-import com.portfolio.helper.Utils
+import com.portfolio.helper.{ CalculatorHelper, Utils }
 import com.portfolio.io.{ DataReader, DataWriter }
 import com.portfolio.measure.DurationMeasurer
 import com.portfolio.returns.{ PortfolioReturnCalculator, ReturnsCalculator }
@@ -29,12 +29,13 @@ class PortfolioCalculatorService(dataReader: DataReader,
 
     val covData: Map[String, CovData] = calculateStocksCovariance(indexesReturns, monthlyStocksEr)
 
-    val vectors = measurer.measure("VectorCreator.createVectors", VectorCreator.createVectors(stocksNames))
+    val vectors = measurer.measure("VectorCreator.createVectors", VectorCreator.createVectors(stocksNames, 5))
     val vectorsForDesiredEr = measurer.measure("filterVectorsWhichComplyDesiredReturn", filterVectorsWhichComplyDesiredReturn(yearlyStocksEr, vectors))
     val vectorsWithVariance = measurer.measure("varianceCalculator.calcVariance", varianceCalculator.calcVariance(vectorsForDesiredEr, covData))
     val vectorsWithStandardDeviation = measurer.measure("STDEVCalculator.calculateStdev", STDEVCalculator.calculateStdev(vectorsWithVariance))
+    val vectorsWithRoundedNumbers = measurer.measure("CalculatorHelper.roundNumbers", CalculatorHelper.roundNumbers(vectorsWithStandardDeviation))
 
-    measurer.measure("dataWriter.writeVectors", dataWriter.writeVectors("results-with-5-indexes", vectorsWithStandardDeviation))
+    measurer.measure("dataWriter.writeVectors", dataWriter.writeVectors("results-with-5-indexes.csv", vectorsWithRoundedNumbers))
   }
 
 
