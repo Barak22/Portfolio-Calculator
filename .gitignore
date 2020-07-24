@@ -107,8 +107,6 @@ package-lock.json
 
 ./.idea/jsLibraryMappings.xml
 
-./.idea/uiDesigner.xml
+target
 
-./.idea/libraries/
-
-./target/
+.DS_Store
