@@ -54,5 +54,13 @@
             <scope>test</scope>
         </dependency>
 
+        <!-- https://mvnrepository.com/artifact/io.airlift/testing-mysql-server -->
+        <dependency>
+            <groupId>io.airlift</groupId>
+            <artifactId>testing-mysql-server</artifactId>
+            <version>5.7.19-1</version>
+            <scope>test</scope>
+        </dependency>
+
     </dependencies>
 </project>
