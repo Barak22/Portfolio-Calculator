@@ -41,7 +41,7 @@ class PortfolioCalculatorService(dataReader: DataReader,
 
   private def filterVectorsWhichComplyDesiredReturn(yearlyStocksEr: Map[String, Double], vectors: Iterator[VectorWeights]) = {
     portfolioReturnCalculator.calcReturn(yearlyStocksEr, vectors)
-      .filter(v => v.Er > ((desiredReturn - 2).toDouble / 100) && v.Er < (desiredReturn + 2).toDouble / 100)
+      .filter(v => v.Er > ((desiredReturn - desiredReturn).toDouble / 100) && v.Er < (desiredReturn + desiredReturn).toDouble / 100)
   }
 
   private def calculateStocksCovariance(indexesReturns: Seq[StockReturnData], monthlyStocksEr: Map[String, Double]) = {
