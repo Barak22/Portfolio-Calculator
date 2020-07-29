@@ -6,7 +6,7 @@ import com.github.tototoshi.csv._
 import com.portfolio.domain.{ IndexRawData, RawLine }
 import org.joda.time.DateTime
 
-class CsvDataReader(path: String) extends DataReader {
+class YahooFinanceCsvDataReader(path: String) extends DataReader {
 
   // TODO: Need to refactor this method.
   override def readFiles(): Seq[IndexRawData] = {
