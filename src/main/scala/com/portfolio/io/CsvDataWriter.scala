@@ -5,12 +5,10 @@ import java.io.File
 import com.github.tototoshi.csv.CSVWriter
 import com.portfolio.domain.VectorStdev
 
-class CsvDataWriter extends DataWriter {
-  val dir = "./src/main/resources/results"
-
+class CsvDataWriter(path: String) extends DataWriter {
   override def writeVectors(fileName: String, vectors: Iterator[VectorStdev]): Unit = {
-    new File(dir).mkdir()
-    val writer: CSVWriter = CSVWriter.open(new File(s"$dir/$fileName"))
+    new File(path).mkdir()
+    val writer: CSVWriter = CSVWriter.open(new File(s"$path/$fileName"))
 
     writeRowsToFile(writer, vectors)
   }
