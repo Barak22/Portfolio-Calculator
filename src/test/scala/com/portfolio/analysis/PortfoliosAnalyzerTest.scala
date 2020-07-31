@@ -11,49 +11,43 @@ import org.specs2.specification.{ AfterAll, Scope }
 import scala.reflect.io.Directory
 
 class PortfoliosAnalyzerTest extends Specification with AfterAll {
-  private val reader = new DefaultPortfoliosReader(Path.testResultsFilesPath)
-  private val writer = new CsvDataWriter(Path.testResultsFilesPath)
+  private val reader = new DefaultPortfoliosReader(Path.testResultsDirPath)
+  private val writer = new CsvDataWriter(Path.testResultsDirPath)
 
   "PortfoliosAnalyzer" should {
     "get the minimum stdev portfolio for each return level" >> {
       "for one stock" in new Context {
-        val stockName1 = randomStr
-        val stockName2 = randomStr
-        val vector = randomVectorStd(stockName1, stockName2)
+        val vector = randomVectorStd
         givenVectorsInFile(Seq(vector))
 
-        portfoliosAnalyzer.analyzePortfolios(Seq(stockName1, stockName2), fromFileName, toFileName)
+        portfoliosAnalyzer.analyzePortfolios(fromFileName, toFileName)
 
-        reader.readVectorsResultFile(Seq(stockName1, stockName2), toFileName).toSeq must
+        reader.readVectorsResultFile(toFileName).toSeq must
           beEqualTo(Seq(vector))
       }
 
       "for two stocks with the same Er" in new Context {
-        val stockName1 = randomStr
-        val stockName2 = randomStr
-        val vector1 = randomVectorStd(stockName1, stockName2)
+        val vector1 = randomVectorStd()
         val vector2 = theSameVectorWithSmallerStdev(vector1)
 
         givenVectorsInFile(Seq(vector1, vector2))
 
-        portfoliosAnalyzer.analyzePortfolios(Seq(stockName1, stockName2), fromFileName, toFileName)
+        portfoliosAnalyzer.analyzePortfolios(fromFileName, toFileName)
 
-        reader.readVectorsResultFile(Seq(stockName1, stockName2), toFileName).toSeq must
+        reader.readVectorsResultFile(toFileName).toSeq must
           beEqualTo(Seq(vector2))
       }
 
       "for two stocks with the same Er" in new Context {
-        val stockName1 = randomStr
-        val stockName2 = randomStr
-        val vector1 = randomVectorStd(stockName1, stockName2)
+        val vector1 = randomVectorStd()
         val vector2 = theSameVectorWithSmallerStdev(vector1)
-        val vector3 = randomVectorStd(stockName1, stockName2)
+        val vector3 = randomVectorStd()
 
         givenVectorsInFile(Seq(vector1, vector2, vector3))
 
-        portfoliosAnalyzer.analyzePortfolios(Seq(stockName1, stockName2), fromFileName, toFileName)
+        portfoliosAnalyzer.analyzePortfolios(fromFileName, toFileName)
 
-        reader.readVectorsResultFile(Seq(stockName1, stockName2), toFileName).toSeq must
+        reader.readVectorsResultFile(toFileName).toSeq must
           containTheSameElementsAs(Seq(vector2, vector3))
       }
     }
@@ -63,9 +57,10 @@ class PortfoliosAnalyzerTest extends Specification with AfterAll {
     val portfoliosAnalyzer = new PortfoliosAnalyzer(reader, writer)
     val irrelevantStocksNames = Seq.empty
     val irrelevantFileName = randomStr
-
     val fromFileName = s"$randomStr.csv"
     val toFileName = s"$randomStr.csv"
+    val stockName1 = randomStr
+    val stockName2 = randomStr
 
 
     def givenVectorsInFile = givenVectorsFor(fromFileName) _
@@ -73,11 +68,12 @@ class PortfoliosAnalyzerTest extends Specification with AfterAll {
     def givenVectorsFor(fileName: String)(vectors: Seq[VectorStdev]) =
       writer.writeVectors(fileName, vectors.iterator)
 
-    def randomVectorStd(stocksNames: String*) = {
-      val stocksWeights = stocksNames.map(randomStockWeight)
+    def randomVectorStd() = {
+      val stocksWeights1 = randomStockWeight(stockName1)
+      val stocksWeights2 = randomStockWeight(stockName2)
       val Er = randomDouble
       val stdev = randomDouble
-      VectorStdev(stocksWeights, Er, stdev)
+      VectorStdev(Seq(stocksWeights1, stocksWeights2), Er, stdev)
     }
 
     def randomStockWeight(stockName: String) = StockWeight(stockName, randomDouble)
@@ -87,7 +83,7 @@ class PortfoliosAnalyzerTest extends Specification with AfterAll {
   }
 
   override def afterAll() {
-    new Directory(new File(Path.testResultsFilesPath)).deleteRecursively()
+    new Directory(new File(Path.testResultsDirPath)).deleteRecursively()
   }
 
 }
