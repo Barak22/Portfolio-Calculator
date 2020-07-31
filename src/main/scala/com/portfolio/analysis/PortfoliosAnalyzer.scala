@@ -13,7 +13,10 @@ class PortfoliosAnalyzer(portfoliosReader: PortfoliosReader, portfoliosWriter: D
 
   // TODO: Need to refactor this method.
   // This method collects the minimum risk portfolios for each E(r) level
-  def buildMapOf(vectors: Iterator[VectorStdev], minimumPortfolios: Map[Double, VectorStdev] = Map.empty): Map[Double, VectorStdev] = {
+  def buildMapOf(
+                  vectors: Iterator[VectorStdev],
+                  minimumPortfolios: Map[Double, VectorStdev] = Map.empty
+                ): Map[Double, VectorStdev] = {
     if (!vectors.hasNext) minimumPortfolios
     else {
       val vector = vectors.next()
