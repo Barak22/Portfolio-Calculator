@@ -53,3 +53,7 @@ case class VectorStdev(
                         Er: Double,
                         stdev: Double
                       )
+
+object VectorStdev {
+  def empty = VectorStdev(Nil, 0, 0)
+}
