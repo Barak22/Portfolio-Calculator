@@ -1,5 +1,6 @@
 package com.portfolio.service
 
+import com.portfolio.analysis.PortfoliosAnalyzer
 import com.portfolio.cov.CovCalculator
 import com.portfolio.domain._
 import com.portfolio.helper.{ CalculatorHelper, Utils }
@@ -17,9 +18,10 @@ class PortfolioCalculatorService(dataReader: DataReader,
                                  varianceCalculator: VarianceCalculator,
                                  portfolioReturnCalculator: PortfolioReturnCalculator,
                                  desiredReturn: Int,
-                                 measurer: DurationMeasurer) {
+                                 measurer: DurationMeasurer,
+                                 portfoliosAnalyzer: PortfoliosAnalyzer) {
 
-  def calculateMarketPortfolio(): Unit = {
+  private def calculateMarketPortfolio(): Iterator[VectorStdev] = {
     val indexesRawData: Seq[IndexRawData] = dataReader.readFiles()
     val stocksNames = indexesRawData.map(_.stockFileName)
     val indexesReturns: Seq[StockReturnData] = calculateStockReturns(indexesRawData)
@@ -33,15 +35,24 @@ class PortfolioCalculatorService(dataReader: DataReader,
     val vectorsForDesiredEr = measurer.measure("filterVectorsWhichComplyDesiredReturn", filterVectorsWhichComplyDesiredReturn(yearlyStocksEr, vectors))
     val vectorsWithVariance = measurer.measure("varianceCalculator.calcVariance", varianceCalculator.calcVariance(vectorsForDesiredEr, covData))
     val vectorsWithStandardDeviation = measurer.measure("STDEVCalculator.calculateStdev", STDEVCalculator.calculateStdev(vectorsWithVariance))
-    val vectorsWithRoundedNumbers = measurer.measure("CalculatorHelper.roundNumbers", CalculatorHelper.roundNumbers(vectorsWithStandardDeviation))
 
-    measurer.measure("dataWriter.writeVectors", dataWriter.writeVectors("results-with-5-indexes.csv", vectorsWithRoundedNumbers))
+    measurer.measure("CalculatorHelper.roundNumbers", CalculatorHelper.roundNumbers(vectorsWithStandardDeviation))
   }
 
+  def calculateAllPortfolios(fileNameToSavePortfolios: String): Unit = {
+    val allPortfolios = calculateMarketPortfolio()
+    measurer.measure("dataWriter.writeVectors", dataWriter.writeVectors(fileNameToSavePortfolios, allPortfolios))
+  }
+
+  def calculateEfficientFrontier(efficientFrontierFileName: String): Unit = {
+    val allPortfolios = calculateMarketPortfolio()
+    val minimumPortfolios = portfoliosAnalyzer.analyzePortfolios(allPortfolios)
+    dataWriter.writeVectors(efficientFrontierFileName, minimumPortfolios.valuesIterator)
+  }
 
   private def filterVectorsWhichComplyDesiredReturn(yearlyStocksEr: Map[String, Double], vectors: Iterator[VectorWeights]) = {
     portfolioReturnCalculator.calcReturn(yearlyStocksEr, vectors)
-      .filter(v => v.Er > ((desiredReturn - desiredReturn).toDouble / 100) && v.Er < (desiredReturn + desiredReturn).toDouble / 100)
+    //      .filter(v => v.Er > ((desiredReturn - desiredReturn).toDouble / 100) && v.Er < (desiredReturn + desiredReturn).toDouble / 100)
   }
 
   private def calculateStocksCovariance(indexesReturns: Seq[StockReturnData], monthlyStocksEr: Map[String, Double]) = {

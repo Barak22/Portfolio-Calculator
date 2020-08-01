@@ -10,6 +10,9 @@ import com.portfolio.service.PortfolioCalculatorService
 import com.portfolio.variance.DefaultVarianceCalculator
 
 object MyApp extends App {
+  val allPortfoliosFileName = "all-portfolios.csv"
+  val efficientFrontierFileName = "efficient-frontier.csv"
+
   val measurer = new DurationMeasurer()
   val dataReader = new YahooFinanceCsvDataReader(Path.yahooFinanceDirPath)
   val dataWriter = new CsvDataWriter(Path.productionResultsDirPath)
@@ -31,6 +34,6 @@ object MyApp extends App {
     measurer = measurer,
     portfoliosAnalyzer)
 
-  measurer.measure("calculateMarketPortfolio", service.calculateMarketPortfolio())
-  //  measurer.measure("calculateEfficientFrontier", service.calculateEfficientFrontier())
+  //  measurer.measure("calculateMarketPortfolio", service.calculateAllPortfolios(allPortfoliosFileName))
+  measurer.measure("calculateEfficientFrontier", service.calculateEfficientFrontier(efficientFrontierFileName))
 }
