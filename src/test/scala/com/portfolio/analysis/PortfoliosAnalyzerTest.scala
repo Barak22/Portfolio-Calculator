@@ -17,25 +17,18 @@ class PortfoliosAnalyzerTest extends Specification with AfterAll {
   "PortfoliosAnalyzer" should {
     "get the minimum stdev portfolio for each return level" >> {
       "for one stock" in new Context {
-        val vector = randomVectorStd
-        givenVectorsInFile(Seq(vector))
+        val vector = randomVectorStd()
 
-        portfoliosAnalyzer.analyzePortfolios(fromFileName, toFileName)
-
-        reader.readVectorsResultFile(toFileName).toSeq must
-          beEqualTo(Seq(vector))
+        portfoliosAnalyzer.analyzePortfolios(Iterator(vector)) must
+          beEqualTo(Map(vector.Er -> vector))
       }
 
       "for two stocks with the same Er" in new Context {
         val vector1 = randomVectorStd()
         val vector2 = theSameVectorWithSmallerStdev(vector1)
 
-        givenVectorsInFile(Seq(vector1, vector2))
-
-        portfoliosAnalyzer.analyzePortfolios(fromFileName, toFileName)
-
-        reader.readVectorsResultFile(toFileName).toSeq must
-          beEqualTo(Seq(vector2))
+        portfoliosAnalyzer.analyzePortfolios(Iterator(vector1, vector2)) must
+          beEqualTo(Map(vector2.Er -> vector2))
       }
 
       "for two stocks with the same Er" in new Context {
@@ -43,12 +36,8 @@ class PortfoliosAnalyzerTest extends Specification with AfterAll {
         val vector2 = theSameVectorWithSmallerStdev(vector1)
         val vector3 = randomVectorStd()
 
-        givenVectorsInFile(Seq(vector1, vector2, vector3))
-
-        portfoliosAnalyzer.analyzePortfolios(fromFileName, toFileName)
-
-        reader.readVectorsResultFile(toFileName).toSeq must
-          containTheSameElementsAs(Seq(vector2, vector3))
+        portfoliosAnalyzer.analyzePortfolios(Iterator(vector1, vector2, vector3)) must
+          beEqualTo(Map(vector2.Er -> vector2, vector3.Er -> vector3))
       }
     }
   }
@@ -65,8 +54,8 @@ class PortfoliosAnalyzerTest extends Specification with AfterAll {
 
     def givenVectorsInFile = givenVectorsFor(fromFileName) _
 
-    def givenVectorsFor(fileName: String)(vectors: Seq[VectorStdev]) =
-      writer.writeVectors(fileName, vectors.iterator)
+    def givenVectorsFor(fileName: String)(vectors: Iterator[VectorStdev]) =
+      writer.writeVectors(fileName, vectors)
 
     def randomVectorStd() = {
       val stocksWeights1 = randomStockWeight(stockName1)

@@ -5,18 +5,16 @@ import com.portfolio.io.{ DataWriter, PortfoliosReader }
 
 
 class PortfoliosAnalyzer(portfoliosReader: PortfoliosReader, portfoliosWriter: DataWriter) {
-  def analyzePortfolios(fromFile: String, toFile: String) = {
-    val minimumPortfolios = buildMapOf(portfoliosReader.readVectorsResultFile(fromFile))
-    portfoliosWriter.writeVectors(toFile, minimumPortfolios.valuesIterator)
-  }
-
+  def analyzePortfolios(vectors: Iterator[VectorStdev]): Map[Double, VectorStdev] =
+    getMinimumRiskPortdoliosMap(vectors, Map.empty)
 
   // TODO: Need to refactor this method.
   // This method collects the minimum risk portfolios for each E(r) level
-  private def buildMapOf(
-                          vectors: Iterator[VectorStdev],
-                          minimumPortfolios: Map[Double, VectorStdev] = Map.empty
-                        ): Map[Double, VectorStdev] = {
+  @scala.annotation.tailrec
+  private def getMinimumRiskPortdoliosMap(
+                                           vectors: Iterator[VectorStdev],
+                                           minimumPortfolios: Map[Double, VectorStdev]
+                                         ): Map[Double, VectorStdev] = {
     if (!vectors.hasNext) minimumPortfolios
     else {
       val vector = vectors.next()
@@ -26,7 +24,7 @@ class PortfoliosAnalyzer(portfoliosReader: PortfoliosReader, portfoliosWriter: D
           else minimumPortfolios
       }.getOrElse(minimumPortfolios + (vector.Er -> vector))
 
-      buildMapOf(vectors, newMinimumPortfolios)
+      getMinimumRiskPortdoliosMap(vectors, newMinimumPortfolios)
     }
   }
 }
