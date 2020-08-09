@@ -3,6 +3,7 @@ package com.portfolio.io
 import java.io.{ File, PrintWriter, Writer }
 
 import com.portfolio.domain.VectorStdev
+import com.portfolio.http.Price
 
 import scala.util.Try
 
@@ -16,6 +17,8 @@ class TxtDataWriter extends DataWriter {
     Try(writeVectorsToFile(writer, vectors))
     writer.close()
   }
+
+  override def writeStockData(fileName: String, stockData: Iterator[Price]): Unit = ???
 
   private def writeVectorsToFile(writer: Writer, vectors: Iterator[VectorStdev]): Unit =
     vectors.foreach(vector => writer.write(vector.toString + System.lineSeparator()))

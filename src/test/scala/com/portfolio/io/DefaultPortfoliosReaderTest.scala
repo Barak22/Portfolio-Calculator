@@ -10,7 +10,7 @@ import org.specs2.specification.{ AfterAll, Scope }
 import scala.reflect.io.Directory
 
 class DefaultPortfoliosReaderTest extends Specification with AfterAll {
-  private val writer = new CsvDataWriter(Path.testResultsDirPath)
+  private val writer = new CsvDataWriter(randomStr, Path.testResultsDirPath)
   private val reader = new DefaultPortfoliosReader(Path.testResultsDirPath)
 
   "DefaultPortfoliosReader" should {
