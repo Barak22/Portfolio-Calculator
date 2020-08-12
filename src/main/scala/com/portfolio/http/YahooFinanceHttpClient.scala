@@ -1,5 +1,7 @@
 package com.portfolio.http
 
+import java.net.URLEncoder
+
 import com.fasterxml.jackson.databind.{ DeserializationFeature, ObjectMapper }
 import com.fasterxml.jackson.module.scala.DefaultScalaModule
 import com.fasterxml.jackson.module.scala.experimental.ScalaObjectMapper
@@ -11,7 +13,7 @@ class YahooFinanceHttpClient extends DataProvider {
     implicit val mapper = createObjectMapper()
 
     val yahooFinanceResponse = Http("https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v2/get-historical-data")
-      .param(YahooFinanceHttpClient.symbol, symbol)
+      .param(YahooFinanceHttpClient.symbol, URLEncoder.encode(symbol, "UTF-8"))
       .param(YahooFinanceHttpClient.frequency, frequency)
       .param(YahooFinanceHttpClient.from, millisInSeconds(from))
       .param(YahooFinanceHttpClient.to, millisInSeconds(to))
@@ -19,7 +21,7 @@ class YahooFinanceHttpClient extends DataProvider {
       .header(YahooFinanceHttpClient.hostHeader._1, YahooFinanceHttpClient.hostHeader._2)
       .header(YahooFinanceHttpClient.keyHeader._1, YahooFinanceHttpClient.keyHeader._2)
       .method(YahooFinanceHttpClient.get)
-      .timeout(6000, 6000)
+      .timeout(10000, 10000)
       .asString
       .body
 
