@@ -23,17 +23,24 @@ class FetchDataService(dataProvider: DataProvider, dataWriter: DataWriter) {
 }
 
 object FetchDataService {
-  val to = DateTime.now().minusDays(2)
+  val to = DateTime.now().minusDays(3)
   val from = to.minusYears(15)
 
   val listOfSymbols =
-    "SPY" ::
-      "QQQ" ::
-      "BGNE" ::
-      "MSCI" ::
-      "TA35.TA" ::
-      "VYM" ::
-      "XBI" ::
-      "XLE" ::
-      "DAX" :: Nil
+    "SPY" :: // S&P 500
+      "QQQ" :: // Nasdaq
+      "MSCI" :: // global emerging markets (Argentina, Brazil, Chile, China, Colombia, Czech Republic, Egypt, Greece, Hungary, India, Indonesia, Korea, Malaysia, Mexico, Pakistan, Peru, Philippines, Poland, Qatar, Russia, Saudi Arabia, South Africa, Taiwan, Thailand, Turkey, and the United Arab Emirates)
+      "TA35.TA" :: // Israel
+      "FT5=F" :: // China
+      "DAX" :: // Germany
+      // Commodity
+      "GLD" :: // Gold
+      "SLV" :: // Silver
+      // Companies
+      "AAPL" :: // Apple
+      "MSFT" :: // Microsoft
+      Nil
 }
+
+//      "BGNE" ::   // BeiGene
+//      "^FTSE" ::  // London
