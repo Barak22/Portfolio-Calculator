@@ -5,7 +5,7 @@ import org.specs2.mutable.Specification
 class PortfolioCalculatorServiceTest extends Specification {
   "PortfolioCalculatorService" should {
     "calc monthly E(r)" in {
-      PortfolioCalculatorService.calcAverageReturn(Seq(
+      PortfolioCalculatorService.calcMonthlyAverageReturn(Seq(
         0.001320195,
         0.008343384,
         0.075983403,

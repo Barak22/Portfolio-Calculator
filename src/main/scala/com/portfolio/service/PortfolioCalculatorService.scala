@@ -79,7 +79,7 @@ class PortfolioCalculatorService(dataReader: DataReader,
   private def calculateTheMonthlyAverageReturnPerStock(indexesReturns: Seq[StockReturnData]) = {
     indexesReturns
       .map(i =>
-        i.stockFileName -> PortfolioCalculatorService.calcAverageReturn(i.stockData.map(_.r))).toMap
+        i.stockFileName -> PortfolioCalculatorService.calcMonthlyAverageReturn(i.stockData.map(_.r))).toMap
   }
 
   private def calculateStockReturns(indexesRawData: Seq[IndexRawData]) = {
@@ -92,12 +92,12 @@ class PortfolioCalculatorService(dataReader: DataReader,
 }
 
 object PortfolioCalculatorService {
-  def calcAverageReturn(returns: Seq[Double]): Double = {
+  def calcMonthlyAverageReturn(returns: Seq[Double]): Double = {
     returns.sum / returns.size
   }
 
   def calcYearlyAverageReturn(returns: Seq[Double]): Double = {
-    Math.pow(1 + returns.sum / returns.size, 12) - 1
+    Math.pow(1 + calcMonthlyAverageReturn(returns), 12) - 1
   }
 
 }
