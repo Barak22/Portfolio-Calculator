@@ -40,5 +40,5 @@ object MyApp extends App {
 
   //    measurer.measure("calculateMarketPortfolio", portfolioCalculatorService.calculateAllPortfolios(allPortfoliosFileName))
   measurer.measure("calculateEfficientFrontier", portfolioCalculatorService.calculateEfficientFrontier(efficientFrontierFileName))
-//    fetchDataService.downloadStockData()
+  //    fetchDataService.downloadStockData()
 }
