@@ -2,11 +2,8 @@ package com.portfolio.analysis
 
 import java.io.File
 
-import com.portfolio.domain.{ Path, StockWeight, VectorStdev }
-import com.portfolio.helper.TestRandomizer.{ randomStr, _ }
-import com.portfolio.io.{ CsvDataWriter, DefaultPortfoliosReader }
-import org.specs2.mutable.Specification
-import org.specs2.specification.{ AfterAll, Scope }
+import com.portfolio.domain.{Path, StockWeight, VectorStdev}
+import com.portfolio.io.{CsvDataWriter, DefaultPortfoliosReader}
 
 import scala.reflect.io.Directory
 
@@ -43,7 +40,7 @@ class PortfoliosAnalyzerTest extends Specification with AfterAll {
   }
 
   trait Context extends Scope {
-    val portfoliosAnalyzer = new PortfoliosAnalyzer(reader, writer)
+    val portfoliosAnalyzer = new PortfoliosAnalyzer()
     val irrelevantStocksNames = Seq.empty
     val irrelevantFileName = randomStr
     val fromFileName = s"$randomStr.csv"
