@@ -1,6 +1,6 @@
 package com.portfolio.service
 
-import com.portfolio.http.{ DataProvider, Response, YahooFinanceHttpClient }
+import com.portfolio.http.{DataProvider, Response, YahooFinanceHttpClient}
 import com.portfolio.io.DataWriter
 import org.joda.time.DateTime
 
@@ -31,7 +31,7 @@ object FetchDataService {
       "QQQ" :: // Nasdaq
       "MSCI" :: // global emerging markets (Argentina, Brazil, Chile, China, Colombia, Czech Republic, Egypt, Greece, Hungary, India, Indonesia, Korea, Malaysia, Mexico, Pakistan, Peru, Philippines, Poland, Qatar, Russia, Saudi Arabia, South Africa, Taiwan, Thailand, Turkey, and the United Arab Emirates)
       "TA35.TA" :: // Israel
-      "FT5=F" :: // China
+      //      "FT5=F" :: // China
       "DAX" :: // Germany
       // Commodity
       "GLD" :: // Gold
