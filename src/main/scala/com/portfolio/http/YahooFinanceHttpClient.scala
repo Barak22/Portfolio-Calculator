@@ -2,15 +2,15 @@ package com.portfolio.http
 
 import java.net.URLEncoder
 
-import com.fasterxml.jackson.databind.{ DeserializationFeature, ObjectMapper }
-import com.fasterxml.jackson.module.scala.DefaultScalaModule
+import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.scala.experimental.ScalaObjectMapper
+import com.portfolio.mapper.ObjectMapperFactory
 import org.joda.time.DateTime
 import scalaj.http.Http
 
 class YahooFinanceHttpClient extends DataProvider {
   def getHistoricData(symbol: String, frequency: String, from: DateTime, to: DateTime): Response = {
-    implicit val mapper = createObjectMapper()
+    implicit val mapper = ObjectMapperFactory.createObjectMapper()
 
     val yahooFinanceResponse = Http("https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v2/get-historical-data")
       .param(YahooFinanceHttpClient.symbol, URLEncoder.encode(symbol, "UTF-8"))
@@ -41,13 +41,6 @@ class YahooFinanceHttpClient extends DataProvider {
       .sortBy(_.date)
 
     Response(symbol, prices)
-  }
-
-  private def createObjectMapper() = {
-    val mapper = new ObjectMapper() with ScalaObjectMapper
-    mapper.registerModule(DefaultScalaModule)
-    mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
-    mapper
   }
 
   private def fromJson[T](json: String)(implicit mapper: ObjectMapper with ScalaObjectMapper, m: Manifest[T]): T =
