@@ -4,10 +4,10 @@ import com.portfolio.analysis.PortfoliosAnalyzer
 import com.portfolio.cov.DefaultCovCalculator
 import com.portfolio.domain.Path
 import com.portfolio.http.YahooFinanceHttpClient
-import com.portfolio.io.{ CsvDataWriter, DefaultPortfoliosReader, YahooFinanceCsvDataReader }
+import com.portfolio.io.{CsvDataWriter, DefaultPortfoliosReader, YahooFinanceCsvDataReader}
 import com.portfolio.measure.DurationMeasurer
-import com.portfolio.returns.{ DefaultPortfolioReturnCalculator, DefaultReturnsCalculator }
-import com.portfolio.service.{ FetchDataService, PortfolioCalculatorService }
+import com.portfolio.returns.{DefaultPortfolioReturnCalculator, DefaultReturnsCalculator}
+import com.portfolio.service.{FetchDataService, PortfolioCalculatorService}
 import com.portfolio.variance.DefaultVarianceCalculator
 
 object MyApp extends App {
@@ -22,7 +22,7 @@ object MyApp extends App {
   val varianceCalculator = new DefaultVarianceCalculator(measurer)
   val portfolioReturnCalculator = new DefaultPortfolioReturnCalculator()
   val portfoliosReader = new DefaultPortfoliosReader(Path.productionResultsDirPath)
-  val portfoliosAnalyzer = new PortfoliosAnalyzer(portfoliosReader, dataWriter)
+  val portfoliosAnalyzer = new PortfoliosAnalyzer()
   val dataProvider = new YahooFinanceHttpClient
 
   val portfolioCalculatorService = new PortfolioCalculatorService(
@@ -32,13 +32,12 @@ object MyApp extends App {
     covCalculator,
     varianceCalculator,
     portfolioReturnCalculator,
-    desiredReturn = 10,
     measurer = measurer,
     portfoliosAnalyzer)
 
   val fetchDataService = new FetchDataService(dataProvider, dataWriter)
 
-  //    measurer.measure("calculateMarketPortfolio", portfolioCalculatorService.calculateAllPortfolios(allPortfoliosFileName))
-  measurer.measure("calculateEfficientFrontier", portfolioCalculatorService.calculateEfficientFrontier(efficientFrontierFileName))
-  //    fetchDataService.downloadStockData()
+  //      measurer.measure("calculateMarketPortfolio", portfolioCalculatorService.calculateAllPortfolios(allPortfoliosFileName))
+  //    measurer.measure("calculateEfficientFrontier", portfolioCalculatorService.calculateEfficientFrontier(efficientFrontierFileName))
+  //      fetchDataService.downloadStockData()
 }
