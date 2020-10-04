@@ -2,10 +2,10 @@ package com.portfolio.io
 
 import java.io.File
 
-import com.portfolio.domain.{ Path, StockWeight, VectorStdev }
-import com.portfolio.helper.TestRandomizer.{ randomDouble, randomStr }
+import com.portfolio.domain.{Path, StockWeight, VectorStdev}
+import com.portfolio.helper.TestRandomizer.{randomDouble, randomStr}
 import org.specs2.mutable.Specification
-import org.specs2.specification.{ AfterAll, Scope }
+import org.specs2.specification.{AfterAll, Scope}
 
 import scala.reflect.io.Directory
 
@@ -51,7 +51,7 @@ class DefaultPortfoliosReaderTest extends Specification with AfterAll {
   }
 
   trait Context extends Scope {
-    val fileName = s"$randomStr.csv"
+    val fileName = randomStr
     val stockName1 = randomStr
     val stockName2 = randomStr
 
