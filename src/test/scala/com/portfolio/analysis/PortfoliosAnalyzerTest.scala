@@ -3,12 +3,14 @@ package com.portfolio.analysis
 import java.io.File
 
 import com.portfolio.domain.{Path, StockWeight, VectorStdev}
-import com.portfolio.io.{CsvDataWriter, DefaultPortfoliosReader}
+import com.portfolio.helper.TestRandomizer.{randomStr, _}
+import com.portfolio.io.CsvDataWriter
+import org.specs2.mutable.Specification
+import org.specs2.specification.{AfterAll, Scope}
 
 import scala.reflect.io.Directory
 
 class PortfoliosAnalyzerTest extends Specification with AfterAll {
-  private val reader = new DefaultPortfoliosReader(Path.testResultsDirPath)
   private val writer = new CsvDataWriter(randomStr, Path.testResultsDirPath)
 
   "PortfoliosAnalyzer" should {
