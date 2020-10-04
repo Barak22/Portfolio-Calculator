@@ -1,17 +1,16 @@
 package com.portfolio.analysis
 
 import com.portfolio.domain.VectorStdev
-import com.portfolio.io.{ DataWriter, PortfoliosReader }
 
 
-class PortfoliosAnalyzer(portfoliosReader: PortfoliosReader, portfoliosWriter: DataWriter) {
+class PortfoliosAnalyzer() {
   def analyzePortfolios(vectors: Iterator[VectorStdev]): Map[Double, VectorStdev] =
-    getMinimumRiskPortdoliosMap(vectors, Map.empty)
+    getMinimumRiskPortfoliosMap(vectors, Map.empty)
 
   // TODO: Need to refactor this method.
   // This method collects the minimum risk portfolios for each E(r) level
   @scala.annotation.tailrec
-  private def getMinimumRiskPortdoliosMap(
+  private def getMinimumRiskPortfoliosMap(
                                            vectors: Iterator[VectorStdev],
                                            minimumPortfolios: Map[Double, VectorStdev]
                                          ): Map[Double, VectorStdev] = {
@@ -24,7 +23,7 @@ class PortfoliosAnalyzer(portfoliosReader: PortfoliosReader, portfoliosWriter: D
           else minimumPortfolios
       }.getOrElse(minimumPortfolios + (vector.Er -> vector))
 
-      getMinimumRiskPortdoliosMap(vectors, newMinimumPortfolios)
+      getMinimumRiskPortfoliosMap(vectors, newMinimumPortfolios)
     }
   }
 }
