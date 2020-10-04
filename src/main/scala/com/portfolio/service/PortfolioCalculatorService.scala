@@ -3,10 +3,10 @@ package com.portfolio.service
 import com.portfolio.analysis.PortfoliosAnalyzer
 import com.portfolio.cov.CovCalculator
 import com.portfolio.domain._
-import com.portfolio.helper.{ CalculatorHelper, Utils }
-import com.portfolio.io.{ DataReader, DataWriter }
+import com.portfolio.helper.{CalculatorHelper, Utils}
+import com.portfolio.io.{DataReader, DataWriter}
 import com.portfolio.measure.DurationMeasurer
-import com.portfolio.returns.{ PortfolioReturnCalculator, ReturnsCalculator }
+import com.portfolio.returns.{PortfolioReturnCalculator, ReturnsCalculator}
 import com.portfolio.stdev.STDEVCalculator
 import com.portfolio.variance.VarianceCalculator
 import com.portfolio.vector.VectorCreator
@@ -17,7 +17,6 @@ class PortfolioCalculatorService(dataReader: DataReader,
                                  covCalculator: CovCalculator,
                                  varianceCalculator: VarianceCalculator,
                                  portfolioReturnCalculator: PortfolioReturnCalculator,
-                                 desiredReturn: Int,
                                  measurer: DurationMeasurer,
                                  portfoliosAnalyzer: PortfoliosAnalyzer) {
 
@@ -44,10 +43,11 @@ class PortfolioCalculatorService(dataReader: DataReader,
     measurer.measure("dataWriter.writeVectors", dataWriter.writeVectors(fileNameToSavePortfolios, allPortfolios))
   }
 
-  def calculateEfficientFrontier(efficientFrontierFileName: String): Unit = {
+  def calculateEfficientFrontier(efficientFrontierFileName: String): Map[Double, VectorStdev] = {
     val allPortfolios = calculateMarketPortfolio()
     val minimumPortfolios = portfoliosAnalyzer.analyzePortfolios(allPortfolios)
     dataWriter.writeVectors(efficientFrontierFileName, minimumPortfolios.valuesIterator)
+    minimumPortfolios
   }
 
   private def filterVectorsWhichComplyDesiredReturn(yearlyStocksEr: Map[String, Double], vectors: Iterator[VectorWeights]) = {
